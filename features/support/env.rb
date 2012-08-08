@@ -1,6 +1,6 @@
 $LOAD_PATH << File.expand_path('../../../lib', __FILE__)
 
-require 'create_subscription.rb'
+require 'rally_utils.rb'
 
 Before do
 end

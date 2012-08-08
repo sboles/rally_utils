@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+begin
+  require 'rubygems'
+  gem 'rally_utils'
+  rescue LoadError
+end
+
+require 'rally_utils'
+
+if !File.exists?('subscriptions')
+  puts <<-EOF
+#{File.basename(__FILE__)} aborted!
+No subscriptions file found!
+look in doc/subscriptions.example for an example file
+EOF
+exit (-1)
+end
+
+eval(File.open('subscriptions').read)
+
+if (RallyUtils::SUBSCRIPTIONS)
+  RallyUtils::SUBSCRIPTIONS[:subscriptions].each do |subscription|
+    puts "creating #{subscription[:username]} with modules #{subscription[:modules]} and toggles #{subscription[:toggles]}"
+    cookie = RallyUtils.login(RallyUtils::SUBSCRIPTIONS[:admin_username], RallyUtils::SUBSCRIPTIONS[:admin_password])
+    subscription_id = RallyUtils.create_subscription(cookie, subscription[:username], subscription[:modules])
+    RallyUtils.switch_toggles(cookie, subscription_id, subscription[:toggles])
+  end
+end
