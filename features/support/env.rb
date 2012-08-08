@@ -1,6 +1,6 @@
 $LOAD_PATH << File.expand_path('../../../lib', __FILE__)
 
-require 'create_user.rb'
+require 'create_subscription.rb'
 
 Before do
 end
