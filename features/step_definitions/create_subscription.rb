@@ -1,5 +1,11 @@
-When /^I log into ALM with username (.*?) with password (.*)$/ do |username, password|
-  @cookie = RallyUtils.login(username, password)
+When /^I retrieve username and password from subscriptions file/ do
+  eval(File.open('subscriptions').read)
+  @username = RallyUtils::SUBSCRIPTIONS[:admin_username]
+  @password = RallyUtils::SUBSCRIPTIONS[:admin_password]
+end
+
+And /^I log into ALM/ do
+  @cookie = RallyUtils.login(@username, @password)
 end
 
 Then /^I can create a subscription with admin username (.*?) and modules (.*)$/ do |admin_user, modules|
