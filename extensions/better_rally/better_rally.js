@@ -125,11 +125,30 @@ window.hideBadRows = function () {
         }).hide();
     };
 
+    me.trimNavigationMenuItems = function () {
+        var DESIRED_TABS = ["Dashboard", "TESTenv", "Backlog", "User Stories", "Portfolio Items", "Kanban (S)", "Defects"];
+
+        $('.nav-menu-item').filter(function () {
+            var $menuItem = $(this);
+            var shouldHide = true;
+            $(DESIRED_TABS).each(function (i, tab) {
+                if ($menuItem.text() === tab) {
+                    shouldHide = false;
+                }
+            });
+
+            return shouldHide;
+        }).remove();
+
+        $('.nav-tab:contains("Reports")').remove();
+    };
+
     $(document).ready(function () {
         $('body').mouseover(function () {
             me.removeBadFields(document, 'detailContent');
             me.expandAllKanbanCards($('iframe')[0].contentDocument);
             me.removeUnusedStoryMenuItems();
+            me.trimNavigationMenuItems();
             if (editorWindow) {
                 me.removeBadFields(editorWindow.document, 'formContent');
                 me.filterKanbanStates(editorWindow.document);
