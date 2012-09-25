@@ -105,9 +105,15 @@ window.hideBadRows = function () {
         optionsToHide.remove();
     };
 
+    me.expandAllKanbanCards = function (document) {
+        var $expandedStyle = $("<style type='text/css'>.cardboard .cardMenu{height: 18px !important;}</style>");
+        $('head', document).append($expandedStyle);
+    };
+
     $(document).ready(function () {
         $('body').mouseover(function () {
             me.removeBadFields(document, 'detailContent');
+            me.expandAllKanbanCards($('iframe')[0].contentDocument);
             if (editorWindow) {
                 me.removeBadFields(editorWindow.document, 'formContent');
                 me.filterKanbanStates(editorWindow.document);
