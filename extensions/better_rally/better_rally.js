@@ -97,7 +97,8 @@ window.hideBadRows = function () {
 
     me.filterKanbanStates = function (document) {
         var VALID_VALUES = ['Ready', 'Building', 'Testing', 'Completed', 'Accepting', 'Merging', 'Released'];
-        $kanbanStateSelect = $(document).find('#custom_attribute_442934705');
+        var STORY_KANBANSTATE_OID = '442934705';
+        $kanbanStateSelect = $(document).find('#custom_attribute_' + STORY_KANBANSTATE_OID);
         var optionsToHide = $kanbanStateSelect.find('option').filter(function (i) {
             return $.inArray($(this).val(), VALID_VALUES) === -1;
         });
