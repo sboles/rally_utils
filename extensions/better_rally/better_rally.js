@@ -110,10 +110,26 @@ window.hideBadRows = function () {
         $('head', document).append($expandedStyle);
     };
 
+    me.removeUnusedStoryMenuItems = function () {
+        var MENU_ITEMS_TO_HIDE = ["Changesets", "Chart", "Test Run", "Test Cases", "Tasks", "Successors", "Predecessors"];
+        $('#detail_tree_cell .treenode').filter(function () {
+            var menuItemText = $(this).text();
+            var shouldHide = false;
+            $(MENU_ITEMS_TO_HIDE).each(function (index, item) {
+                if (menuItemText.indexOf(item) !== -1) {
+                    shouldHide = true;
+                }
+            });
+
+            return shouldHide;
+        }).hide();
+    };
+
     $(document).ready(function () {
         $('body').mouseover(function () {
             me.removeBadFields(document, 'detailContent');
             me.expandAllKanbanCards($('iframe')[0].contentDocument);
+            me.removeUnusedStoryMenuItems();
             if (editorWindow) {
                 me.removeBadFields(editorWindow.document, 'formContent');
                 me.filterKanbanStates(editorWindow.document);
