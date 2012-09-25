@@ -64,12 +64,15 @@ window.hideBadRows = function () {
             "Urgent",
             "Watch List",
             "Work Start Date",
-            "Notes",
             "Change Description"];
 
         var DEFECT_FIELDS_TO_HIDE = [
             "Target Build",
-            "Target Date"
+            "Target Date",
+            "xcv",
+            "Type",
+            "Exception Email",
+            "ReOpened"
         ];
 
         var FIELDS_TO_HIDE = $.merge(STORY_FIELDS_TO_HIDE, DEFECT_FIELDS_TO_HIDE);
