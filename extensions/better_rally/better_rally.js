@@ -231,6 +231,7 @@ window.hideBadRows = function () {
                             callback:function (storyRecord) {
                                 var branchHtml = "<strong>Branch:</strong> " + storyRecord.get('ImplementedIn');
                                 $card.find('.branchName').html(branchHtml);
+                                $card.find('.branchName').bind('selectstart',function(e){e.stopPropagation();});
                             }
                         });
                     }
