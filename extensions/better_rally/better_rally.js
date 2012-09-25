@@ -200,8 +200,16 @@ window.hideBadRows = function () {
         $('.nav-tab:contains("Reports")').remove();
     };
 
+    me.setupKanbanBoardRallyLink = function () {
+        $('.sp-label').css('font-size', '1.5em');
+        $('.sp-label').click(function () {
+            location.href = "https://rally1.rallydev.com/#/6895507658d/custom/3173483378";
+        });
+    };
+
     $(document).ready(function () {
         $('body').mouseover(function () {
+            me.setupKanbanBoardRallyLink();
             me.removeBadFields(document, 'detailContent');
 
             me.expandAllKanbanCards($('iframe')[0].contentDocument);
