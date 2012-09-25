@@ -110,6 +110,63 @@ window.hideBadRows = function () {
         $('head', document).append($expandedStyle);
     };
 
+    me.claimButtonClicked = function () {
+        var $card = $(this).parents('.card');
+        var formattedId = $card.find('.leftCardHeader').text();
+        var newOwnerDisplayName = $('#options').find('a').first().text();
+
+        Rally.data.ModelFactory.getModel({
+            type:'User',
+            success:function (model) {
+                model.find({
+                    filters:[
+                        {
+                            property:'DisplayName',
+                            value:newOwnerDisplayName
+                        }
+                    ],
+                    callback:function (ownerRecord) {
+                        Rally.data.ModelFactory.getModel({
+                            type:'HierarchicalRequirement',
+                            success:function (model) {
+                                model.find({
+                                    filters:[
+                                        {
+                                            property:'FormattedID',
+                                            value:formattedId
+                                        }
+                                    ],
+                                    callback:function (storyRecord) {
+                                        storyRecord.set("Owner", ownerRecord.data);
+                                        storyRecord.save({
+                                            callback:function (record, operation) {
+                                                if (operation.success) {
+                                                    $card.find('.cardOwnerName').text(newOwnerDisplayName);
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+        return false;
+    };
+
+    me.addClaimButtonToKanbanCards = function (document) {
+        if ($('.claimButton', document).length > 0) {
+            return;
+        }
+
+        var claimHtml = " <a style='padding-left:1em' class='claimButton' href='#'>Claim</a>";
+        $('.card .editLinkContainer', document).append(claimHtml);
+        $('.claimButton', document).click(me.claimButtonClicked);
+    };
+
     me.removeUnusedStoryMenuItems = function () {
         var MENU_ITEMS_TO_HIDE = ["Changesets", "Chart", "Test Run", "Test Cases", "Tasks", "Successors", "Predecessors"];
         $('#detail_tree_cell .treenode').filter(function () {
@@ -146,9 +203,13 @@ window.hideBadRows = function () {
     $(document).ready(function () {
         $('body').mouseover(function () {
             me.removeBadFields(document, 'detailContent');
+
             me.expandAllKanbanCards($('iframe')[0].contentDocument);
+            me.addClaimButtonToKanbanCards($('iframe')[0].contentDocument);
+
             me.removeUnusedStoryMenuItems();
             me.trimNavigationMenuItems();
+
             if (editorWindow) {
                 me.removeBadFields(editorWindow.document, 'formContent');
                 me.filterKanbanStates(editorWindow.document);
