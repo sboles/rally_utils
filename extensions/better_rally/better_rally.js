@@ -98,19 +98,19 @@ window.hideBadRows = function () {
         $(elementsToHide).hide();
     };
 
-    me.filterKanbanStates = function (document) {
+    me.filterKanbanStates = function (d) {
         var VALID_VALUES = ['Ready', 'Building', 'Testing', 'Completed', 'Accepting', 'Merging', 'Released'];
         var STORY_KANBANSTATE_OID = '442934705';
-        $kanbanStateSelect = $(document).find('#custom_attribute_' + STORY_KANBANSTATE_OID);
+        $kanbanStateSelect = $(d).find('#custom_attribute_' + STORY_KANBANSTATE_OID);
         var optionsToHide = $kanbanStateSelect.find('option').filter(function (i) {
             return $.inArray($(this).val(), VALID_VALUES) === -1;
         });
         optionsToHide.remove();
     };
 
-    me.expandAllKanbanCards = function (document) {
+    me.expandAllKanbanCards = function (d) {
         var $expandedStyle = $("<style type='text/css'>.cardboard .cardMenu{height: 18px !important;}</style>");
-        $('head', document).append($expandedStyle);
+        $('head', d).append($expandedStyle);
     };
 
     me.claimButtonClicked = function () {
@@ -210,13 +210,44 @@ window.hideBadRows = function () {
         });
     };
 
+    me.addImplementedInFieldToMergingCards = function (d) {
+        var $cards = $('.columnHeader:contains("Merging")', d).parents('.column').find('.card');
+        $cards.each(function () {
+            var $card = $(this);
+            if ($card.find('.branchName').length === 0) {
+                $card.find('.cardName').after("<hr/><div class='branchName'></div>");
+
+                var cardFormattedId = $(this).find('.leftCardHeader').text();
+                Rally.data.ModelFactory.getModel({
+                    type:'HierarchicalRequirement',
+                    success:function (model) {
+                        model.find({
+                            filters:[
+                                {
+                                    property:'FormattedID',
+                                    value:cardFormattedId
+                                }
+                            ],
+                            callback:function (storyRecord) {
+                                var branchHtml = "<strong>Branch:</strong> " + storyRecord.get('ImplementedIn');
+                                $card.find('.branchName').html(branchHtml);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    };
+
     $(document).ready(function () {
         $('body').mouseover(function () {
             me.setupKanbanBoardRallyLink();
             me.removeBadFields(document, 'detailContent');
 
-            me.expandAllKanbanCards($('iframe')[0].contentDocument);
-            me.addClaimButtonToKanbanCards($('iframe')[0].contentDocument);
+            var iframeDocument = $('iframe')[0].contentDocument;
+            me.expandAllKanbanCards(iframeDocument);
+            me.addClaimButtonToKanbanCards(iframeDocument);
+            me.addImplementedInFieldToMergingCards(iframeDocument);
 
             me.removeUnusedStoryMenuItems();
             me.trimNavigationMenuItems();
