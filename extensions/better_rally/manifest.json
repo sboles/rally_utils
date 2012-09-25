@@ -1,0 +1,12 @@
+{
+  "name": "Better Rally",
+  "version": "1",
+  "manifest_version": 2,
+  "description": "A better way to use Rally.",
+  "content_scripts": [
+    {
+      "matches": ["https://rally1.rallydev.com/*"],
+      "js": ["better_rally.js"]
+    }
+  ]
+}
