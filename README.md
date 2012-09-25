@@ -24,3 +24,11 @@ end
 ```
 * Start your server
 * Run `create_subscriptions`
+
+## Better Rally
+Better Rally is a Google Chrome extension that filters out the noise when using Rally. 
+
+## Installation
+* Clone this project
+* Enable developer mode in Chrome
+* Load Unpacked Extension and select `extensions/better_rally`
