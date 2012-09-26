@@ -210,7 +210,6 @@ var main = function () {
 
                 var cardFormattedId = $(this).find('.leftCardHeader').text();
                 var modelName = cardFormattedId.substring(0, 1) == "S" ? "HierarchicalRequirement" : "Defect";
-                console.log( window );
                 Rally.data.ModelFactory.getModel({
                     type:modelName,
                     success:function (model) {
