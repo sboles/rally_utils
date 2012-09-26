@@ -1,22 +1,26 @@
 {
-  "name": "Better Rally",
-  "version": "1",
-  "manifest_version": 2,
-  "description": "A better way to use Rally.",
-  "background": { "scripts": ["background.js"] },
-  "permissions": [
-    "tabs"
-  ],
-  "content_scripts": [
-    {
-    "matches": ["https://rally1.rallydev.com/*"],
-    "js": ["better_rally.js"]
-  }
-  ],
-  "browser_action": {
-    "default_icon": "icon19.png"
-  },
-  "icons": { "16": "icon16.png",
-    "48": "icon48.png",
-    "128": "icon128.png" }
+    "name":"Better Rally",
+    "version":"1",
+    "manifest_version":2,
+    "description":"A better way to use Rally.",
+    "background":{
+        "scripts":["js/background.js"]
+    },
+    "permissions":[
+        "tabs"
+    ],
+    "content_scripts":[
+        {
+            "matches":["https://rally1.rallydev.com/*"],
+            "js":["js/better_rally.js"]
+        }
+    ],
+    "browser_action":{
+        "default_icon":"icon19.png"
+    },
+    "icons":{
+        "16":"icon16.png",
+        "48":"icon48.png",
+        "128":"icon128.png"
+    }
 }

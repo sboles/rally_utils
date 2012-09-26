@@ -16,7 +16,7 @@ var addJQuery = function (callback) {
     document.body.appendChild(script);
 };
 
-window.hideBadRows = function () {
+window.main = function () {
     var me = this;
     me.removeBadFields = function (d, container_id) {
         var STORY_FIELDS_TO_HIDE = [
@@ -276,6 +276,6 @@ window.hideBadRows = function () {
 
 chrome.extension.sendMessage({is_toggled_on:true}, function (response) {
     if (response.toggled_on) {
-        addJQuery(hideBadRows);
+        addJQuery(main);
     }
 });
