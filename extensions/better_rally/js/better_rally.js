@@ -10,13 +10,14 @@ chrome.extension.sendMessage({is_toggled_on:true}, function (response) {
     if (response.toggled_on) {
         function injectJs(links) {
             var script = document.createElement("script");
-            script.type="text/javascript";
-            script.src=links[0];
-            script.addEventListener('load', function () {
-                var script = document.createElement("script");
-                script.src = links[1];
-                document.body.appendChild(script);
-            }, false);
+            script.type = "text/javascript";
+            script.src = links[0];
+            var callback = function () {
+                if (links.length > 1) {
+                    injectJs(links.slice(1));
+                }
+            };
+            script.addEventListener('load', callback, false);
 
             (document.head || document.body || document.documentElement).appendChild(script);
         }
