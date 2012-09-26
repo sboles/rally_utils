@@ -239,7 +239,6 @@ window.hideBadRows = function () {
                                 }
                             ],
                             callback:function (record) {
-                                console.log(record.data);
                                 var branchName = modelName == "HierarchicalRequirement" ? record.get('ImplementedIn') : record.get("FixedInBuild");
                                 var branchHtml = "<strong>Branch:</strong> " + branchName;
                                 $card.find('.branchName').html(branchHtml);
