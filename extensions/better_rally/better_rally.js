@@ -1,9 +1,9 @@
 chrome.extension.onMessage.addListener(
-  function(request, sender, sendResponse) {
-  if (request.refresh) {
-    location.reload();
-  }
-});
+    function (request, sender, sendResponse) {
+        if (request.refresh) {
+            location.reload();
+        }
+    });
 
 var addJQuery = function (callback) {
     var script = document.createElement("script");
@@ -125,6 +125,8 @@ window.hideBadRows = function () {
         var formattedId = $card.find('.leftCardHeader').text();
         var newOwnerDisplayName = $('#options').find('a').first().text();
 
+        var modelName = formattedId.substring(0, 1) == "S" ? "HierarchicalRequirement" : "Defect";
+
         Rally.data.ModelFactory.getModel({
             type:'User',
             success:function (model) {
@@ -137,7 +139,7 @@ window.hideBadRows = function () {
                     ],
                     callback:function (ownerRecord) {
                         Rally.data.ModelFactory.getModel({
-                            type:'HierarchicalRequirement',
+                            type:modelName,
                             success:function (model) {
                                 model.find({
                                     filters:[
@@ -225,8 +227,9 @@ window.hideBadRows = function () {
                 $card.find('.cardName').after("<hr/><div class='branchName'></div>");
 
                 var cardFormattedId = $(this).find('.leftCardHeader').text();
+                var modelName = cardFormattedId.substring(0, 1) == "S" ? "HierarchicalRequirement" : "Defect";
                 Rally.data.ModelFactory.getModel({
-                    type:'HierarchicalRequirement',
+                    type:modelName,
                     success:function (model) {
                         model.find({
                             filters:[
@@ -235,10 +238,14 @@ window.hideBadRows = function () {
                                     value:cardFormattedId
                                 }
                             ],
-                            callback:function (storyRecord) {
-                                var branchHtml = "<strong>Branch:</strong> " + storyRecord.get('ImplementedIn');
+                            callback:function (record) {
+                                console.log(record.data);
+                                var branchName = modelName == "HierarchicalRequirement" ? record.get('ImplementedIn') : record.get("FixedInBuild");
+                                var branchHtml = "<strong>Branch:</strong> " + branchName;
                                 $card.find('.branchName').html(branchHtml);
-                                $card.find('.branchName').bind('selectstart',function(e){e.stopPropagation();});
+                                $card.find('.branchName').bind('selectstart', function (e) {
+                                    e.stopPropagation();
+                                });
                             }
                         });
                     }
@@ -268,8 +275,8 @@ window.hideBadRows = function () {
     });
 };
 
-chrome.extension.sendMessage({is_toggled_on: true}, function(response) {
-  if(response.toggled_on) {
-    addJQuery(hideBadRows);
-  }
+chrome.extension.sendMessage({is_toggled_on:true}, function (response) {
+    if (response.toggled_on) {
+        addJQuery(hideBadRows);
+    }
 });
