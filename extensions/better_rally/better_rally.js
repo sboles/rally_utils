@@ -1,3 +1,10 @@
+chrome.extension.onMessage.addListener(
+  function(request, sender, sendResponse) {
+  if (request.refresh) {
+    location.reload();
+  }
+});
+
 var addJQuery = function (callback) {
     var script = document.createElement("script");
     script.setAttribute("src", "https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js");
@@ -260,4 +267,9 @@ window.hideBadRows = function () {
         });
     });
 };
-addJQuery(hideBadRows);
+
+chrome.extension.sendMessage({is_toggled_on: true}, function(response) {
+  if(response.toggled_on) {
+    addJQuery(hideBadRows);
+  }
+});
