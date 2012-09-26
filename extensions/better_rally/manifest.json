@@ -19,7 +19,8 @@
     ],
     "web_accessible_resources":[
         "js/jquery-1.8.2.min.js",
-        "js/main.js"
+        "js/main.js",
+        "js/remove_bad_fields.js"
     ],
     "browser_action":{
         "default_icon":"images/icon19.png"

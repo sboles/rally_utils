@@ -24,7 +24,8 @@ chrome.extension.sendMessage({is_toggled_on:true}, function (response) {
 
         injectJs([
             chrome.extension.getURL("js/jquery-1.8.2.min.js"),
-            chrome.extension.getURL("js/main.js")
+            chrome.extension.getURL("js/main.js"),
+            chrome.extension.getURL("js/remove_bad_fields.js")
         ]);
     }
 });
