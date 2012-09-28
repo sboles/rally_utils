@@ -11,11 +11,6 @@ var main = function () {
         optionsToHide.remove();
     };
 
-    me.expandAllKanbanCards = function (d) {
-        var $expandedStyle = $("<style type='text/css'>.cardboard .cardMenu{height: 18px !important;}</style>");
-        $('head', d).append($expandedStyle);
-    };
-
     me.claimButtonClicked = function () {
         var $card = $(this).parents('.card');
         var formattedId = $card.find('.leftCardHeader').text();
@@ -153,7 +148,6 @@ var main = function () {
         me.setupKanbanBoardRallyLink();
 
         var iframeDocument = $('iframe')[0].contentDocument;
-        me.expandAllKanbanCards(iframeDocument);
         me.addClaimButtonToKanbanCards(iframeDocument);
         me.addImplementedInFieldToMergingCards(iframeDocument);
 
