@@ -26,13 +26,6 @@ var main = function () {
         }).hide();
     };
 
-    me.setupKanbanBoardRallyLink = function () {
-        $('.sp-label').css('font-size', '1.5em');
-        $('.sp-label').click(function () {
-            location.href = "https://rally1.rallydev.com/#/6895507658d/custom/3173483378";
-        });
-    };
-
     me.addImplementedInFieldToMergingCards = function (d) {
         var $cards = $('.columnHeader:contains("Merging")', d).parents('.column').find('.card');
         $cards.each(function () {
@@ -68,8 +61,6 @@ var main = function () {
     };
 
     $('body').mouseover(function () {
-        me.setupKanbanBoardRallyLink();
-
         var iframeDocument = $('iframe')[0].contentDocument;
         me.addImplementedInFieldToMergingCards(iframeDocument);
 

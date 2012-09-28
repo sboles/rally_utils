@@ -23,6 +23,7 @@
         "js/remove_bad_fields.js",
         "js/kanban/expand_all_kanban_cards.js",
         "js/kanban/add_claim_button_to_kanban_cards.js",
+        "js/kanban/setup_kanban_rally_link.js",
         "js/navigation/trim_navigation_menu.js"
     ],
     "browser_action":{
