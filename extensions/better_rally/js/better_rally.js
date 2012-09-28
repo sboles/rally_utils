@@ -26,7 +26,8 @@ chrome.extension.sendMessage({is_toggled_on:true}, function (response) {
             chrome.extension.getURL("js/lib/jquery-1.8.2.min.js"),
             chrome.extension.getURL("js/main.js"),
             chrome.extension.getURL("js/remove_bad_fields.js"),
-            chrome.extension.getURL("js/expand_all_kanban_cards.js"),
+            chrome.extension.getURL("js/kanban/expand_all_kanban_cards.js"),
+            chrome.extension.getURL("js/kanban/add_claim_button_to_kanban_cards.js"),
             chrome.extension.getURL("js/navigation/trim_navigation_menu.js")
         ]);
     }
