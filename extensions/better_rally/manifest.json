@@ -24,6 +24,7 @@
         "js/kanban/expand_all_kanban_cards.js",
         "js/kanban/add_claim_button_to_kanban_cards.js",
         "js/kanban/setup_kanban_rally_link.js",
+        "js/editors/filter_kanban_states.js",
         "js/navigation/trim_navigation_menu.js",
         "js/remove_unused_story_menu_items.js"
     ],

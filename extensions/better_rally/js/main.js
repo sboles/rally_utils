@@ -1,16 +1,6 @@
 var main = function () {
     var me = this;
 
-    me.filterKanbanStates = function (d) {
-        var VALID_VALUES = ['Ready', 'Building', 'Testing', 'Completed', 'Accepting', 'Merging', 'Released'];
-        var STORY_KANBANSTATE_OID = '442934705';
-        $kanbanStateSelect = $(d).find('#custom_attribute_' + STORY_KANBANSTATE_OID);
-        var optionsToHide = $kanbanStateSelect.find('option').filter(function (i) {
-            return $.inArray($(this).val(), VALID_VALUES) === -1;
-        });
-        optionsToHide.remove();
-    };
-
     me.addImplementedInFieldToMergingCards = function (d) {
         var $cards = $('.columnHeader:contains("Merging")', d).parents('.column').find('.card');
         $cards.each(function () {
@@ -48,10 +38,6 @@ var main = function () {
     $('body').mouseover(function () {
         var iframeDocument = $('iframe')[0].contentDocument;
         me.addImplementedInFieldToMergingCards(iframeDocument);
-
-        if (typeof(editorWindow) !== "undefined") {
-            me.filterKanbanStates(editorWindow.document);
-        }
     });
 };
 main();
