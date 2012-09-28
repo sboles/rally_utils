@@ -1,7 +1,5 @@
-var main = function () {
-    var me = this;
-
-    me.addImplementedInFieldToMergingCards = function (d) {
+(function () {
+    var addImplementedInFieldToCards = function (d) {
         var $cards = $('.columnHeader:contains("Merging")', d).parents('.column').find('.card');
         $cards.each(function () {
             var $card = $(this);
@@ -35,9 +33,13 @@ var main = function () {
         });
     };
 
-    $('body').mouseover(function () {
-        var iframeDocument = $('iframe')[0].contentDocument;
-        me.addImplementedInFieldToMergingCards(iframeDocument);
-    });
-};
-main();
+    setInterval(function (event) {
+        if ($('iframe').length == 0) {
+            return;
+        }
+
+        $('iframe').each(function () {
+            addImplementedInFieldToCards($(this)[0].contentDocument);
+        });
+    }, 2000);
+})();
