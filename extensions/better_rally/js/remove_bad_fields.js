@@ -2,7 +2,6 @@ var hideBadFieldsInDocument = function (d, container_id) {
     var STORY_FIELDS_TO_HIDE = [
         "Tags",
         "Blocked",
-        "Release",
         "Iteration",
         "Plan Est",
         "Task Est",
