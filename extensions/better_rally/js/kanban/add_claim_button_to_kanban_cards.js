@@ -48,14 +48,19 @@
         return false;
     };
 
+    var findCardsMissingClaimButton = function (d) {
+        return $('.card:not(:contains(Claim))', d);
+    };
+
     var addClaimButtonToKanbanCards = function (d) {
-        if ($('.claimButton', d).length > 0 || $('.card .editLinkContainer', d).length === 0) {
+        if ($('.card .editLinkContainer', d).length === 0) {
             return;
         }
 
+        var $cardsMissingClaimButton = findCardsMissingClaimButton(d);
         var claimHtml = " <a style='padding-left:1em' class='claimButton' href='#'>Claim</a>";
-        $('.card .editLinkContainer', d).append(claimHtml);
-        $('.claimButton', d).click(claimButtonClicked);
+        $cardsMissingClaimButton.find('.editLinkContainer').append(claimHtml);
+        $cardsMissingClaimButton.find('.claimButton').click(claimButtonClicked);
     };
 
     setInterval(function (event) {
