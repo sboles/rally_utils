@@ -21,7 +21,8 @@
         "js/lib/jquery-1.8.2.min.js",
         "js/main.js",
         "js/remove_bad_fields.js",
-        "js/expand_all_kanban_cards.js"
+        "js/expand_all_kanban_cards.js",
+        "js/navigation/trim_navigation_menu.js"
     ],
     "browser_action":{
         "default_icon":"images/icon19.png"
