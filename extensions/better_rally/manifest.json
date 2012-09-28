@@ -24,7 +24,8 @@
         "js/kanban/expand_all_kanban_cards.js",
         "js/kanban/add_claim_button_to_kanban_cards.js",
         "js/kanban/setup_kanban_rally_link.js",
-        "js/navigation/trim_navigation_menu.js"
+        "js/navigation/trim_navigation_menu.js",
+        "js/remove_unused_story_menu_items.js"
     ],
     "browser_action":{
         "default_icon":"images/icon19.png"

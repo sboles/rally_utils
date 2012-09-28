@@ -11,21 +11,6 @@ var main = function () {
         optionsToHide.remove();
     };
 
-    me.removeUnusedStoryMenuItems = function () {
-        var MENU_ITEMS_TO_HIDE = ["Changesets", "Chart", "Test Run", "Test Cases", "Tasks", "Successors", "Predecessors"];
-        $('#detail_tree_cell .treenode').filter(function () {
-            var menuItemText = $(this).text();
-            var shouldHide = false;
-            $(MENU_ITEMS_TO_HIDE).each(function (index, item) {
-                if (menuItemText.indexOf(item) !== -1) {
-                    shouldHide = true;
-                }
-            });
-
-            return shouldHide;
-        }).hide();
-    };
-
     me.addImplementedInFieldToMergingCards = function (d) {
         var $cards = $('.columnHeader:contains("Merging")', d).parents('.column').find('.card');
         $cards.each(function () {
@@ -63,8 +48,6 @@ var main = function () {
     $('body').mouseover(function () {
         var iframeDocument = $('iframe')[0].contentDocument;
         me.addImplementedInFieldToMergingCards(iframeDocument);
-
-        me.removeUnusedStoryMenuItems();
 
         if (typeof(editorWindow) !== "undefined") {
             me.filterKanbanStates(editorWindow.document);
