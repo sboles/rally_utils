@@ -16,10 +16,10 @@ var refresh_tab = function () {
 function toggle_on_off() {
     if (toggled_on) {
         toggled_on = false;
-        chrome.browserAction.setIcon({path:"icon19_off.png"});
+        chrome.browserAction.setIcon({path:"images/icon19_off.png"});
     } else {
         toggled_on = true;
-        chrome.browserAction.setIcon({path:"icon19.png"});
+        chrome.browserAction.setIcon({path:"images/icon19.png"});
     }
     refresh_tab();
 }
