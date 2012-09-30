@@ -7,7 +7,7 @@ chrome.extension.onMessage.addListener(
 );
 
 chrome.extension.sendMessage({is_toggled_on:true}, function (response) {
-    if (response.toggled_on) {
+    if (response.is_toggled_on) {
         function injectJs(links) {
             var script = document.createElement("script");
             script.type = "text/javascript";

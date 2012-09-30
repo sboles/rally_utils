@@ -1,29 +1,36 @@
-var toggled_on;
+var toggle_on_off = (function () {
 
-chrome.extension.onMessage.addListener(
-    function (request, sender, sendResponse) {
-        if (request.is_toggled_on) {
-            sendResponse({toggled_on:toggled_on});
-        }
-    });
+  var is_toggled_on;
 
-var refresh_tab = function () {
+  var refresh_tab = function () {
     chrome.tabs.getSelected(null, function (tab) {
-        chrome.tabs.sendMessage(tab.id, {refresh:true});
+      chrome.tabs.sendMessage(tab.id, {refresh:true});
     });
-};
+  };
 
-function toggle_on_off() {
-    if (toggled_on) {
-        toggled_on = false;
-        chrome.browserAction.setIcon({path:"images/icon19_off.png"});
+  var toggle_on_off = function() {
+    if (is_toggled_on) {
+      is_toggled_on = false;
+      chrome.browserAction.setIcon({path:"images/icon19_off.png"});
     } else {
-        toggled_on = true;
-        chrome.browserAction.setIcon({path:"images/icon19.png"});
+      is_toggled_on = true;
+      chrome.browserAction.setIcon({path:"images/icon19.png"});
     }
     refresh_tab();
-}
+  }
+
+  toggle_on_off();
+
+  chrome.extension.onMessage.addListener(
+    function (request, sender, sendResponse) {
+    if (request.is_toggled_on) {
+      sendResponse({is_toggled_on:is_toggled_on});
+    }
+  });
+
+  return toggle_on_off;
+
+})();
 
 chrome.browserAction.onClicked.addListener(toggle_on_off);
-toggle_on_off();
 
