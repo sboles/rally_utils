@@ -27,6 +27,7 @@
         "js/kanban/add_implemented_in_field_to_cards.js",
         "js/kanban/setup_kanban_rally_link.js",
         "js/kanban/hide_titlebar.js",
+        "js/kanban/add_policy_fields_to_cards.js",
         "js/navigation/trim_navigation_menu.js"
     ],
     "browser_action":{
