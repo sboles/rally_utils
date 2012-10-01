@@ -1,5 +1,5 @@
 (function () {
-    var enableInlineEditForBranchName = function () {
+    var enableInlineEditForBranchName = function (e) {
         if (!$(this).find('input').is(":visible")) {
             var $readOnlyBranchName = $(this).find('.readOnlyBranchName');
             var branchName = $readOnlyBranchName.text();
@@ -10,6 +10,7 @@
 
             $readOnlyBranchName.hide();
             $inlineEditInput.show();
+            $inlineEditInput[0].focus();
         }
     };
 
@@ -32,6 +33,12 @@
                 }});
             });
         }
+    };
+
+    var hideEditableInputFields = function () {
+        var $card = $($(this).parents('.card')[0]);
+        $card.find('input').hide();
+        $card.find('.readOnlyBranchName').show();
     };
 
     var getFormattedIdForCard = function ($card) {
@@ -80,8 +87,9 @@
                             "</span>";
                         $card.find('.branchIndicator').html(branchHtml);
 
-                        $card.find('.branchIndicator').dblclick(enableInlineEditForBranchName);
+                        $card.find('.branchIndicator').click(enableInlineEditForBranchName);
                         $card.find('.editBranchName').keypress(inlineEditInputKeyEvent);
+                        $card.find('.editBranchName')[0].onblur = hideEditableInputFields;
                         $card.find('.branchIndicator').bind('selectstart', function (e) {
                             e.stopPropagation();
                         });
