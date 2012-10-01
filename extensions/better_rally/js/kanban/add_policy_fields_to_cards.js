@@ -26,6 +26,29 @@
     };
 
     var addPolicyFieldsToCards = function (d) {
+        var POLICY_FIELDS = [
+            {
+                displayName:'State',
+                modelName:'ScheduleState',
+                className:'schedule-state'
+            },
+            {
+                displayName:'Feature Toggle Status',
+                modelName:'FeatureToggleStatus',
+                className:'feature-toggle-status'
+            },
+            {
+                displayName:'Impact On Ops',
+                modelName:'ImpactonOps',
+                className:'impact-on-ops'
+            },
+            {
+                displayName:'Data Migration',
+                modelName:'DataMigration',
+                className:'data-migration'
+            }
+        ];
+
         var $cards = $('.columnHeader:contains(Building)', d).parents('.column').find('.card');
         $cards.each(function () {
             var $card = $(this);
@@ -34,24 +57,27 @@
 
                 var cardFormattedId = getFormattedIdForCard($(this));
                 queryForArtifact(cardFormattedId, function (record) {
-                    var featureToggleStatus = "<p class='feature-toggle-status'><strong>Feature Toggle Status:</strong> " +
-                        "<span class='value'>" + record.get("FeatureToggleStatus") + "</span></p>";
+                    console.log( record );
+                    $(POLICY_FIELDS).each(function (i, field) {
+                        var policyHtml = "<p style='margin-top:0;margin-bottom:0' class='" + field.className + "'><strong>" + field.displayName + ":</strong> " +
+                            "<span class='value'>" + record.get(field.modelName) + "</span></p>";
 
-                    $card.find('.policyFields').append(featureToggleStatus);
+                        $card.find('.policyFields').append(policyHtml);
+                    });
                 });
             }
         });
     };
 
     var findCardsMissingMoreButton = function (d) {
-        return $('.card', d).filter(function(){
+        return $('.card', d).filter(function () {
             return $(this).text().indexOf("Less...") === -1 && $(this).text().indexOf("More...") === -1;
         });
     };
 
-    var moreButtonClicked = function(){
+    var moreButtonClicked = function () {
         var $policyFields = $($(this).parents('.card')[0]).find('.policyFields');
-        if( $policyFields.is(":visible")){
+        if ($policyFields.is(":visible")) {
             $policyFields.fadeOut();
             $(this).text('More...');
         }
