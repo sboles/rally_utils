@@ -58,8 +58,11 @@
         }
 
         var $cardsMissingClaimButton = findCardsMissingClaimButton(d);
-        var claimHtml = " <a style='padding-left:1em' class='claimButton' href='#'>Claim</a>";
-        $cardsMissingClaimButton.find('.editLinkContainer').append(claimHtml);
+        var claimHtml = " <a style='float:right; padding-right: 1em' class='claimButton' href='#'>Claim</a>";
+        $cardOwnerNameDiv = $cardsMissingClaimButton.find('.cardOwnerName');
+        $cardOwnerNameDiv.css("display","inline-block");
+        $cardOwnerNameDiv.css("float","right");
+        $cardOwnerNameDiv.after(claimHtml);
         $cardsMissingClaimButton.find('.claimButton').click(claimButtonClicked);
     };
 
