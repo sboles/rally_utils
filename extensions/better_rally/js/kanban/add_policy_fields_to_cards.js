@@ -57,7 +57,6 @@
 
                 var cardFormattedId = getFormattedIdForCard($(this));
                 queryForArtifact(cardFormattedId, function (record) {
-                    console.log( record );
                     $(POLICY_FIELDS).each(function (i, field) {
                         var policyHtml = "<p style='margin-top:0;margin-bottom:0' class='" + field.className + "'><strong>" + field.displayName + ":</strong> " +
                             "<span class='value'>" + record.get(field.modelName) + "</span></p>";

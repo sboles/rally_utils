@@ -32,6 +32,7 @@ chrome.extension.sendMessage({is_toggled_on:true}, function (response) {
             chrome.extension.getURL("js/kanban/setup_kanban_rally_link.js"),
             chrome.extension.getURL("js/kanban/hide_titlebar.js"),
             chrome.extension.getURL("js/kanban/add_policy_fields_to_cards.js"),
+            chrome.extension.getURL("js/kanban/shorten_display_names.js"),
             chrome.extension.getURL("js/navigation/trim_navigation_menu.js")
         ]);
     }
