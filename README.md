@@ -32,3 +32,11 @@ Better Rally is a Google Chrome extension that filters out the noise when using 
 * Clone this project
 * Enable developer mode in Chrome
 * Load Unpacked Extension and select `extensions/better_rally`
+
+## git-branches
+A shell script to list branches with the authors of the last commit. A name can be supplied 
+to find all branches where the last commit's author string includes the name.
+
+* git-branches - list all branches with the last commit author
+* git-branches "string" - list all branches that include 'string' in the last commit author string   
+
