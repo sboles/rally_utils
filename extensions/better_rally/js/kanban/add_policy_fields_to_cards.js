@@ -26,45 +26,70 @@
     };
 
     var addPolicyFieldsToCards = function (d) {
-        var POLICY_FIELDS = [
-            {
-                displayName:'State',
-                modelName:'ScheduleState',
-                className:'schedule-state'
-            },
-            {
-                displayName:'Feature Toggle Status',
-                modelName:'FeatureToggleStatus',
-                className:'feature-toggle-status'
-            },
-            {
-                displayName:'Impact On Ops',
-                modelName:'ImpactonOps',
-                className:'impact-on-ops'
-            },
-            {
-                displayName:'Data Migration',
-                modelName:'DataMigration',
-                className:'data-migration'
-            }
-        ];
+        var KANBAN_COLUMN_POLICIES = {
+            "Building":[
+                {
+                    displayName:'State',
+                    modelName:'ScheduleState',
+                    className:'schedule-state'
+                },
+                {
+                    displayName:'Feature Toggle Status',
+                    modelName:'FeatureToggleStatus',
+                    className:'feature-toggle-status'
+                },
+                {
+                    displayName:'Impact On Ops',
+                    modelName:'ImpactonOps',
+                    className:'impact-on-ops'
+                },
+                {
+                    displayName:'Data Migration',
+                    modelName:'DataMigration',
+                    className:'data-migration'
+                }
+            ],
+            "Accepting":[
+                {
+                    displayName:'State',
+                    modelName:'ScheduleState',
+                    className:'schedule-state'
+                }
+            ],
+            "Testing":[
+                {
+                    displayName:'State',
+                    modelName:'ScheduleState',
+                    className:'schedule-state'
+                }
+            ],
+            "Merging":[
+                {
+                    displayName:'Release',
+                    modelName:'Release',
+                    className:'release'
+                }
+            ]
+        };
 
-        var $cards = $('.columnHeader:contains(Building)', d).parents('.column').find('.card');
-        $cards.each(function () {
-            var $card = $(this);
-            if ($card.find('.policyFields').length === 0) {
-                $card.find('.cardContent').append("<div style='display:none' class='policyFields'><hr/></div>");
+        $.each(KANBAN_COLUMN_POLICIES, function (column) {
+            var $cards = $('.columnHeader:contains(' + column + ')', d).parents('.column').find('.card');
+            $cards.each(function () {
+                var $card = $(this);
+                if ($card.find('.policyFields').length === 0) {
+                    $card.find('.cardContent').append("<div style='display:none' class='policyFields'><hr/></div>");
 
-                var cardFormattedId = getFormattedIdForCard($(this));
-                queryForArtifact(cardFormattedId, function (record) {
-                    $(POLICY_FIELDS).each(function (i, field) {
-                        var policyHtml = "<p style='margin-top:0;margin-bottom:0' class='" + field.className + "'><strong>" + field.displayName + ":</strong> " +
-                            "<span class='value'>" + record.get(field.modelName) + "</span></p>";
+                    var cardFormattedId = getFormattedIdForCard($(this));
+                    queryForArtifact(cardFormattedId, function (record) {
+                        $(KANBAN_COLUMN_POLICIES[column]).each(function (i, field) {
+                            var policyHtml = "<p style='margin-top:0;margin-bottom:0' class='" + field.className + "'><strong>" + field.displayName + ":</strong> " +
+                                "<span class='value'>" + record.get(field.modelName) + "</span></p>";
 
-                        $card.find('.policyFields').append(policyHtml);
+                            $card.find('.policyFields').append(policyHtml);
+                        });
                     });
-                });
-            }
+                }
+            });
         });
     };
 
