@@ -1,0 +1,14 @@
+# Default subscriptions that will be created in dev
+
+module RallyUtils
+  SUBSCRIPTIONS = {}
+  SUBSCRIPTIONS[:admin_username] = 'slmadmin'
+  SUBSCRIPTIONS[:admin_password] = 'w0rk$h0p'
+  SUBSCRIPTIONS[:subscriptions] = [
+    {
+      :username => 'test@test.com',
+      :modules => ['Rally Portfolio Manager', 'Rally Quality Manager'],
+      :toggles => ['ENABLE_BULK_EDIT_OF_ALL_FIELDS', 'PROVISION_TRIAL_AND_COMMUNITY_IN_PROD']
+    }
+  ]
+end
