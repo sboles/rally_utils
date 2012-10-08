@@ -3,3 +3,6 @@ subscriptions
 .idea
 *.iml
 .DS_Store
+*.ipr
+*.iws
+*.iml
