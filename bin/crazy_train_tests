@@ -2,7 +2,7 @@
 
 branch_name = nil
 branch_name=ARGV[0] if ARGV.length == 1
-branch_name = `git branch | grep "*" | sed "s/* //"` if !branch_name
+branch_name = `git branch | grep "*" | sed "s/* //"`.strip if !branch_name
 puts "branch is #{branch_name}"
 
 if /master/ =~ branch_name
