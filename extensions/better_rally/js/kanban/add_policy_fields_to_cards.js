@@ -39,21 +39,17 @@
     };
 
     var ALLOWED_VALUES = {
-        "ScheduleState":["Idea", "Defined", "In-Progress", "Completed", "Accepted", "Released"]
-    };
-
-    var enableInlineEdit = function (e) {
-        if (!$(this).find('select').is(":visible")) {
-            var $readOnlyText = $(this).find('.readOnly');
-            var readOnlyText = $readOnlyText.text();
-
-            var $inlineEditSelect = $(this).find('select');
-            $inlineEditSelect.val(readOnlyText);
-            $inlineEditSelect.prop('disabled', false);
-
-            $readOnlyText.hide();
-            $inlineEditSelect.show();
-        }
+        "ScheduleState":["Idea", "Defined", "In-Progress", "Completed", "Accepted", "Released"],
+        "FeatureToggleStatus":[
+            "",
+            "No Feature Toggle",
+            "Toggled Off",
+            "Toggled On For Rally",
+            "Private Beta",
+            "Open Beta",
+            "Toggled On For All",
+            "GA (Toggle Removed)"
+        ]
     };
 
     var getFormattedIdForCard = function ($card) {
@@ -93,13 +89,21 @@
             record.set(modelName, newValue);
             record.save({callback:function () {
                 $select.attr('disabled', false);
+                var parent = $($select.parents('p')[0]);
+                parent.find('.readOnly').text(newValue);
+
+                showHidePolicyFieldEditorFromCard(parent);
             }});
         });
     };
 
     var showHidePolicyFieldEditor = function () {
-        $(this).find('select').toggle();
-        $(this).find('.readOnly').toggle();
+        showHidePolicyFieldEditorFromCard($(this));
+    };
+
+    var showHidePolicyFieldEditorFromCard = function ($card) {
+        $card.find('select').toggle();
+        $card.find('.readOnly').toggle();
     };
 
     var addPolicyFieldsToCards = function (d) {
