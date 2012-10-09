@@ -1,4 +1,61 @@
 (function () {
+    var KANBAN_COLUMN_POLICIES = {
+        "Building":[
+            {
+                displayName:'State',
+                modelName:'ScheduleState'
+            },
+            {
+                displayName:'Feature Toggle Status',
+                modelName:'FeatureToggleStatus'
+            },
+            {
+                displayName:'Impact On Ops',
+                modelName:'ImpactonOps'
+            },
+            {
+                displayName:'Data Migration',
+                modelName:'DataMigration'
+            }
+        ],
+        "Accepting":[
+            {
+                displayName:'State',
+                modelName:'ScheduleState'
+            }
+        ],
+        "Testing":[
+            {
+                displayName:'State',
+                modelName:'ScheduleState'
+            }
+        ],
+        "Merging":[
+            {
+                displayName:'Release',
+                modelName:'Release'
+            }
+        ]
+    };
+
+    var ALLOWED_VALUES = {
+        "ScheduleState":["Idea", "Defined", "In-Progress", "Completed", "Accepted", "Released"]
+    };
+
+    var enableInlineEdit = function (e) {
+        if (!$(this).find('select').is(":visible")) {
+            var $readOnlyText = $(this).find('.readOnly');
+            var readOnlyText = $readOnlyText.text();
+
+            var $inlineEditSelect = $(this).find('select');
+            $inlineEditSelect.val(readOnlyText);
+            $inlineEditSelect.prop('disabled', false);
+
+            $readOnlyText.hide();
+            $inlineEditSelect.show();
+        }
+    };
+
     var getFormattedIdForCard = function ($card) {
         return $card.find('.leftCardHeader').text();
     };
@@ -25,53 +82,27 @@
         });
     };
 
-    var addPolicyFieldsToCards = function (d) {
-        var KANBAN_COLUMN_POLICIES = {
-            "Building":[
-                {
-                    displayName:'State',
-                    modelName:'ScheduleState',
-                    className:'schedule-state'
-                },
-                {
-                    displayName:'Feature Toggle Status',
-                    modelName:'FeatureToggleStatus',
-                    className:'feature-toggle-status'
-                },
-                {
-                    displayName:'Impact On Ops',
-                    modelName:'ImpactonOps',
-                    className:'impact-on-ops'
-                },
-                {
-                    displayName:'Data Migration',
-                    modelName:'DataMigration',
-                    className:'data-migration'
-                }
-            ],
-            "Accepting":[
-                {
-                    displayName:'State',
-                    modelName:'ScheduleState',
-                    className:'schedule-state'
-                }
-            ],
-            "Testing":[
-                {
-                    displayName:'State',
-                    modelName:'ScheduleState',
-                    className:'schedule-state'
-                }
-            ],
-            "Merging":[
-                {
-                    displayName:'Release',
-                    modelName:'Release',
-                    className:'release'
-                }
-            ]
-        };
+    var policyFieldSelectChange = function () {
+        var $select = $(this);
+        $select.attr('disabled', true);
+        var newValue = $select.val();
+        var modelName = $($select.parents('p')[0]).data('model-name');
+        var formattedId = getFormattedIdForCard($($select.parents('.card')[0]));
 
+        queryForArtifact(formattedId, function (record) {
+            record.set(modelName, newValue);
+            record.save({callback:function () {
+                $select.attr('disabled', false);
+            }});
+        });
+    };
+
+    var showHidePolicyFieldEditor = function () {
+        $(this).find('select').toggle();
+        $(this).find('.readOnly').toggle();
+    };
+
+    var addPolicyFieldsToCards = function (d) {
         $.each(KANBAN_COLUMN_POLICIES, function (column) {
             var $cards = $('.columnHeader:contains(' + column + ')', d).parents('.column').find('.card');
             $cards.each(function () {
@@ -82,10 +113,33 @@
                     var cardFormattedId = getFormattedIdForCard($(this));
                     queryForArtifact(cardFormattedId, function (record) {
                         $(KANBAN_COLUMN_POLICIES[column]).each(function (i, field) {
-                            var policyHtml = "<p style='margin-top:0;margin-bottom:0' class='" + field.className + "'><strong>" + field.displayName + ":</strong> " +
-                                "<span class='value'>" + record.get(field.modelName) + "</span></p>";
+                            var initialValue = record.get(field.modelName);
+                            var $policyHtml = $("<p style='margin-top:0;margin-bottom:0'>" +
+                                "<strong>" + field.displayName + ":</strong> " +
+                                "<span class='value readOnly'>" + initialValue + "</span>" +
+                                "</p>");
 
-                            $card.find('.policyFields').append(policyHtml);
+                            $policyHtml.data('model-name', field.modelName);
+
+                            if (ALLOWED_VALUES[field.modelName]) {
+                                var $select = $("<select>");
+                                $.each(ALLOWED_VALUES[field.modelName], function (i, allowedValue) {
+                                    var $option = $("<option>");
+                                    $option.val(allowedValue);
+                                    $option.text(allowedValue);
+                                    $select.append($option);
+                                });
+
+                                $select.val(initialValue);
+
+                                $select.change(policyFieldSelectChange);
+                                $select.hide();
+                                $policyHtml.append($select);
+
+                                $policyHtml.click(showHidePolicyFieldEditor);
+                            }
+
+                            $card.find('.policyFields').append($policyHtml);
                         });
                     });
                 }
