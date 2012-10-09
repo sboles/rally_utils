@@ -11,7 +11,7 @@
     ],
     "content_scripts":[
         {
-            "matches":["https://rally1.rallydev.com/*"],
+            "matches":["https://rally1.rallydev.com/*", "https://us1.rallydev.com/*"],
             "js":[
                 "js/better_rally.js"
             ]
