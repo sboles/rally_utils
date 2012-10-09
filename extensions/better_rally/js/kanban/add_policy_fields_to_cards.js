@@ -39,7 +39,13 @@
     };
 
     var ALLOWED_VALUES = {
-        "ScheduleState":["Idea", "Defined", "In-Progress", "Completed", "Accepted", "Released"],
+        "ScheduleState":[
+            "Idea",
+            "Defined",
+            "In-Progress",
+            "Completed",
+            "Accepted",
+            "Released"],
         "FeatureToggleStatus":[
             "",
             "No Feature Toggle",
@@ -49,6 +55,15 @@
             "Open Beta",
             "Toggled On For All",
             "GA (Toggle Removed)"
+        ],
+        "ImpactonOps": [
+            "No Entry",
+            "No Impact",
+            "Cold Migration",
+            "Hot Migration",
+            "SOLR Rebuild",
+            "Cassandra",
+            "We need to talk"
         ]
     };
 
