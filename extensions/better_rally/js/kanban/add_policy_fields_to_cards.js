@@ -1,4 +1,62 @@
 (function () {
+    var setupSelectFromAllowedValues = function (allowedValues, initialValue, $policyHtml) {
+        var $select = $("<select>");
+        $.each(allowedValues, function (i, allowedValue) {
+            var $option = $("<option>");
+            $option.val(allowedValue);
+            $option.text(allowedValue);
+            $select.append($option);
+        });
+
+        $select.val(initialValue);
+
+        $select.change(policyFieldSelectChange);
+        $select.hide();
+        $policyHtml.append($select);
+
+        $policyHtml.click(showHidePolicyFieldEditor);
+    }
+
+    var releasesStore = null;
+    var getReleaseNamesFromStore = function (store) {
+        var names = [];
+        store.each(function (record) {
+            names.push(record.get("Name"));
+        });
+        return names;
+
+    };
+
+    var releasesLoading = false;
+    var getReleases = function (callback) {
+        if (releasesLoading) {
+            setTimeout(function () {
+                getReleases(callback);
+            }, 1000);
+            return;
+        }
+
+        if (releasesStore) {
+            callback(getReleaseNamesFromStore(releasesStore));
+            return;
+        }
+
+        releasesLoading = true;
+        Rally.data.ModelFactory.getModel({
+            type:"Release",
+            success:function (model) {
+                releasesStore = Ext4.create("Ext.data.Store", {
+                    fetch:["Name"],
+                    model:model
+                });
+                releasesStore.load({callback:function () {
+                    releasesLoading = false;
+                    callback(getReleaseNamesFromStore(releasesStore));
+                }});
+            }
+        });
+    };
+
     var KANBAN_COLUMN_POLICIES = {
         "Building":[
             {
@@ -56,7 +114,7 @@
             "Toggled On For All",
             "GA (Toggle Removed)"
         ],
-        "ImpactonOps": [
+        "ImpactonOps":[
             "No Entry",
             "No Impact",
             "Cold Migration",
@@ -64,7 +122,8 @@
             "SOLR Rebuild",
             "Cassandra",
             "We need to talk"
-        ]
+        ],
+        "Release":getReleases
     };
 
     var getFormattedIdForCard = function ($card) {
@@ -140,22 +199,16 @@
 
                             $policyHtml.data('model-name', field.modelName);
 
-                            if (ALLOWED_VALUES[field.modelName]) {
-                                var $select = $("<select>");
-                                $.each(ALLOWED_VALUES[field.modelName], function (i, allowedValue) {
-                                    var $option = $("<option>");
-                                    $option.val(allowedValue);
-                                    $option.text(allowedValue);
-                                    $select.append($option);
-                                });
-
-                                $select.val(initialValue);
-
-                                $select.change(policyFieldSelectChange);
-                                $select.hide();
-                                $policyHtml.append($select);
-
-                                $policyHtml.click(showHidePolicyFieldEditor);
+                            var allowedValuesLookup = ALLOWED_VALUES[field.modelName];
+                            if (allowedValuesLookup) {
+                                if (Ext4.isArray(allowedValuesLookup)) {
+                                    setupSelectFromAllowedValues(allowedValuesLookup, initialValue, $policyHtml);
+                                }
+                                else {
+                                    allowedValuesLookup(function (allowedValues) {
+                                        setupSelectFromAllowedValues(allowedValues, initialValue, $policyHtml);
+                                    });
+                                }
                             }
 
                             $card.find('.policyFields').append($policyHtml);
