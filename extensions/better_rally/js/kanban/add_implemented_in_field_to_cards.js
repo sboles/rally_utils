@@ -68,7 +68,7 @@
     };
 
     var addImplementedInFieldToCards = function (d) {
-        var COLUMNS_TO_ADD_FIELD_TO = ['Building', 'Testing', 'Merging'];
+        var COLUMNS_TO_ADD_FIELD_TO = ['Building', 'Peer Review', 'Testing', 'Merging'];
         $(COLUMNS_TO_ADD_FIELD_TO).each(function (i, header) {
             var $cards = $('.columnHeader:contains("' + header + '")', d).parents('.column').find('.card');
             $cards.each(function () {

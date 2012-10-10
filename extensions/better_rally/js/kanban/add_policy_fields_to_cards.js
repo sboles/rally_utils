@@ -92,6 +92,24 @@
                 modelName:'DataMigration'
             }
         ],
+        "Peer Review":[
+            {
+                displayName:'State',
+                modelName:'ScheduleState'
+            },
+            {
+                displayName:'Feature Toggle Status',
+                modelName:'FeatureToggleStatus'
+            },
+            {
+                displayName:'Impact On Ops',
+                modelName:'ImpactonOps'
+            },
+            {
+                displayName:'Data Migration',
+                modelName:'DataMigration'
+            }
+        ],
         "Accepting":[
             {
                 displayName:'State',
