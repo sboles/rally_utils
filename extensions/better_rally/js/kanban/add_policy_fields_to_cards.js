@@ -3,8 +3,8 @@
         var $select = $("<select>");
         $.each(allowedValues, function (i, allowedValue) {
             var $option = $("<option>");
-            $option.val(allowedValue);
-            $option.text(allowedValue);
+            $option.val(allowedValue.value);
+            $option.text(allowedValue.displayValue);
             $select.append($option);
         });
 
@@ -21,10 +21,9 @@
     var getReleaseNamesFromStore = function (store) {
         var names = [];
         store.each(function (record) {
-            names.push(record.get("Name"));
+            names.push({displayValue:record.get("Name"), value:record.get("_ref")});
         });
         return names;
-
     };
 
     var releasesLoading = false;
@@ -98,30 +97,31 @@
 
     var ALLOWED_VALUES = {
         "ScheduleState":[
-            "Idea",
-            "Defined",
-            "In-Progress",
-            "Completed",
-            "Accepted",
-            "Released"],
+            {displayValue:"Idea", value:"Idea"},
+            {displayValue:"Defined", value:"Defined"},
+            {displayValue:"In-Progress", value:"In-Progress"},
+            {displayValue:"Completed", value:"Completed"},
+            {displayValue:"Accepted", value:"Accepted"},
+            {displayValue:"Released", value:"Released"}
+        ],
         "FeatureToggleStatus":[
-            "",
-            "No Feature Toggle",
-            "Toggled Off",
-            "Toggled On For Rally",
-            "Private Beta",
-            "Open Beta",
-            "Toggled On For All",
-            "GA (Toggle Removed)"
+            {displayValue:"", value:""},
+            {displayValue:"No Feature Toggle", value:"No Feature Toggle"},
+            {displayValue:"Toggled Off", value:"Toggled Off"},
+            {displayValue:"Toggled On For Rally", value:"Toggled On For Rally"},
+            {displayValue:"Private Beta", value:"Private Beta"},
+            {displayValue:"Open Beta", value:"Open Beta"},
+            {displayValue:"Toggled On For All", value:"Toggled On For All"},
+            {displayValue:"GA (Toggle Removed)", value:"GA (Toggle Removed)"}
         ],
         "ImpactonOps":[
-            "No Entry",
-            "No Impact",
-            "Cold Migration",
-            "Hot Migration",
-            "SOLR Rebuild",
-            "Cassandra",
-            "We need to talk"
+            {displayValue:"No Entry", value:"No Entry"},
+            {displayValue:"No Impact", value:"No Impact"},
+            {displayValue:"Cold Migration", value:"Cold Migration"},
+            {displayValue:"Hot Migration", value:"Hot Migration"},
+            {displayValue:"SOLR Rebuild", value:"SOLR Rebuild"},
+            {displayValue:"Cassandra", value:"Cassandra"},
+            {displayValue:"We need to talk", value:"We need to talk"}
         ],
         "Release":getReleases
     };
@@ -156,6 +156,8 @@
         var $select = $(this);
         $select.attr('disabled', true);
         var newValue = $select.val();
+        var newValueDisplayValue = $select.find(':selected').text();
+
         var modelName = $($select.parents('p')[0]).data('model-name');
         var formattedId = getFormattedIdForCard($($select.parents('.card')[0]));
 
@@ -164,7 +166,7 @@
             record.save({callback:function () {
                 $select.attr('disabled', false);
                 var parent = $($select.parents('p')[0]);
-                parent.find('.readOnly').text(newValue);
+                parent.find('.readOnly').text(newValueDisplayValue);
 
                 showHidePolicyFieldEditorFromCard(parent);
             }});
@@ -192,6 +194,10 @@
                     queryForArtifact(cardFormattedId, function (record) {
                         $(KANBAN_COLUMN_POLICIES[column]).each(function (i, field) {
                             var initialValue = record.get(field.modelName);
+                            if (Ext4.isObject(initialValue)) {
+                                initialValue = record.get(field.modelName)["_refObjectName"];
+                            }
+
                             var $policyHtml = $("<p style='margin-top:0;margin-bottom:0'>" +
                                 "<strong>" + field.displayName + ":</strong> " +
                                 "<span class='value readOnly'>" + initialValue + "</span>" +
