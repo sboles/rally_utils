@@ -19,11 +19,28 @@
 
     var releasesStore = null;
     var getReleaseNamesFromStore = function (store) {
-        var names = [];
+        var releases = [
+        ];
         store.each(function (record) {
-            names.push({displayValue:record.get("Name"), value:record.get("_ref")});
+            var name = record.get("Name");
+            releases.push({displayValue:name, value:record.get("_ref")});
         });
-        return names;
+
+        return trimReleasesToFuture(releases);
+    };
+
+    var trimReleasesToFuture = function (releases) {
+        var today = new Date();
+
+        var trimmedReleases = [
+            {displayValue:'No Entry', value:''}
+        ];
+        Ext4.Array.forEach(releases, function (release) {
+            if (new Date(Date.parse(release.displayValue)) >= (today - 1)) {
+                trimmedReleases.push(release);
+            }
+        })
+        return trimmedReleases;
     };
 
     var releasesLoading = false;
