@@ -1,6 +1,6 @@
 (function () {
     var filterKanbanStates = function (d) {
-        var VALID_VALUES = ['Ready', 'Building', 'Testing', 'Completed', 'Accepting', 'Merging', 'Released'];
+        var VALID_VALUES = ['Ready', 'Building', 'Peer Review', 'Testing', 'Completed', 'Accepting', 'Merging', 'Released'];
         var STORY_KANBANSTATE_OID = '442934705';
         $kanbanStateSelect = $(d).find('#custom_attribute_' + STORY_KANBANSTATE_OID);
         var optionsToHide = $kanbanStateSelect.find('option').filter(function (i) {
