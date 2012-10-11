@@ -16,6 +16,12 @@ module RallyUtils
           :modules => [],
           :subscription_type => ['Express_Edition'],
           :toggles => []
+      },
+      {
+          :username => 'admin@hs.com',
+          :modules => [],
+          :subscription_type => ['HS_1'],
+          :toggles => []
       }
   ]
 end
