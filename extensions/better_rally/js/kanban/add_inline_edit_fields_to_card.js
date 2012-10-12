@@ -31,6 +31,9 @@
                 else if (name === "peerReview") {
                     fieldToChange = "PeerReview";
                 }
+                else if (name === "blockedReason") {
+                    fieldToChange = "BlockedReason";
+                }
 
                 record.set(fieldToChange, newBranchName);
                 record.save({callback:function () {
@@ -115,6 +118,32 @@
         }
     };
 
+    var addBlockedReasonToCard = function () {
+        var $card = $(this);
+        if ($card.find('.blockedReason').length === 0) {
+            $card.find('.peerReview').after("<div class='blockedReason inlineHolder'></div>");
+
+            var cardFormattedId = getFormattedIdForCard($(this));
+            queryForArtifact(cardFormattedId, function (record) {
+                var blockedReason = record.get("BlockedReason");
+                var blockedReasonHtml = "<div class='blockedReasonHolder' style='display:none'>" +
+                    "<strong>Blocked:</strong> " +
+                    "<span class='blockedReason'>" +
+                    "<span class='readOnlyInline'>" + blockedReason + "</span> " +
+                    "<input name='blockedReason' class='editBlockedReason' style='display:none' type='text'/>" +
+                    "</span>" +
+                    "</div>";
+
+                buildCardWithEvents($card, blockedReasonHtml, 'blockedReason', 'editBlockedReason');
+
+                if (record.get("Blocked")) {
+                    $card.find('.blockedReasonHolder').show();
+                }
+            });
+        }
+    };
+
+
     var buildCardWithEvents = function ($card, html, inlineHolderClass, inputClass) {
         $card.find('.' + inlineHolderClass).html(html);
 
@@ -138,6 +167,32 @@
             var $cards = $('.columnHeader:contains("' + header + '")', d).parents('.column').find('.card');
             $cards.each(addPeerReviewToCard);
         });
+
+        var BLOCKED_REASON_COLUMNS = ['Building', 'Peer Review', 'Testing', 'Merging'];
+        $(BLOCKED_REASON_COLUMNS).each(function (i, header) {
+            var $cards = $('.columnHeader:contains("' + header + '")', d).parents('.column').find('.card');
+            $cards.each(addBlockedReasonToCard);
+        });
+    };
+
+    var addBlockedToggleListener = function (d) {
+        $('.card:not(.blockBound)', d).each(function () {
+            var $card = $(this);
+            if ($card.find('.blockedIndicator').length === 0) {
+                return;
+            }
+
+            $card.addClass('blockBound');
+            var $blockedIndicator = $card.find('.blockedIndicator');
+            $blockedIndicator.addClass("blockBound");
+            $blockedIndicator.click(function () {
+                var $blockedReasonHolder = $card.find('.blockedReasonHolder');
+                $blockedReasonHolder.toggle();
+                if ($blockedReasonHolder.is(":visible")) {
+                    $card.find('.blockedReason').click();
+                }
+            });
+        });
     };
 
     setInterval(function (event) {
@@ -147,6 +202,7 @@
 
         $('iframe').each(function () {
             addInlineEditFields($(this)[0].contentDocument);
+            addBlockedToggleListener($(this)[0].contentDocument);
         });
     }, 2000);
 })();
