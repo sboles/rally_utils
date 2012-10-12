@@ -121,7 +121,12 @@
     var addBlockedReasonToCard = function () {
         var $card = $(this);
         if ($card.find('.blockedReason').length === 0) {
-            $card.find('.peerReview').after("<div class='blockedReason inlineHolder'></div>");
+            var precedingElement = '.peerReview';
+            if ($card.find('.peerReview').length === 0) {
+                precedingElement = '.branchIndicator';
+            }
+
+            $card.find(precedingElement).after("<div class='blockedReason inlineHolder'></div>");
 
             var cardFormattedId = getFormattedIdForCard($(this));
             queryForArtifact(cardFormattedId, function (record) {
