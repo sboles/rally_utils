@@ -90,14 +90,8 @@
                     "<span class='readOnlyInline'>" + branchName + "</span> " +
                     "<input name='branch' class='editBranchName' style='display:none' type='text'/>" +
                     "</span>";
-                $card.find('.branchIndicator').html(branchHtml);
 
-                $card.find('.branchIndicator').click(enableInlineEdit);
-                $card.find('.editBranchName').keypress(inlineEditInputKeyEvent);
-                $card.find('.editBranchName')[0].onblur = hideEditableInputFields;
-                $card.find('.branchIndicator').bind('selectstart', function (e) {
-                    e.stopPropagation();
-                });
+                buildCardWithEvents($card, branchHtml, 'branchIndicator', 'editBranchName');
             });
         }
     };
@@ -116,16 +110,20 @@
                     "<input name='peerReview' class='editPeerReview' style='display:none' type='text'/>" +
                     "</span>";
 
-                $card.find('.peerReview').html(peerReviewHtml);
-
-                $card.find('.peerReview').click(enableInlineEdit);
-                $card.find('.editPeerReview').keypress(inlineEditInputKeyEvent);
-                $card.find('.editPeerReview')[0].onblur = hideEditableInputFields;
-                $card.find('.peerReview').bind('selectstart', function (e) {
-                    e.stopPropagation();
-                });
+                buildCardWithEvents($card, peerReviewHtml, 'peerReview', 'editPeerReview');
             });
         }
+    };
+
+    var buildCardWithEvents = function ($card, html, inlineHolderClass, inputClass) {
+        $card.find('.' + inlineHolderClass).html(html);
+
+        $card.find('.' + inlineHolderClass).click(enableInlineEdit);
+        $card.find('.' + inlineHolderClass).bind('selectstart', function (e) {
+            e.stopPropagation();
+        });
+        $card.find('.' + inputClass).keypress(inlineEditInputKeyEvent);
+        $card.find('.' + inputClass)[0].onblur = hideEditableInputFields;
     };
 
     var addInlineEditFields = function (d) {
