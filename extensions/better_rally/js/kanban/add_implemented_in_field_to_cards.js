@@ -80,7 +80,8 @@
                     queryForArtifact(cardFormattedId, function (record) {
                         var modelName = record.store.model.elementName;
                         var branchName = modelName == "HierarchicalRequirement" ? record.get('ImplementedIn') : record.get("FixedInBuild");
-                        var branchHtml = "<strong>Branch:</strong> " +
+                        var branchLabel = modelName == "HierarchicalRequirement" ? "Branch" : "Fixed In";
+                        var branchHtml = "<strong>" + branchLabel + ":</strong> " +
                             "<span class='branchName'>" +
                             "<span class='readOnlyBranchName'>" + branchName + "</span> " +
                             "<input class='editBranchName' style='display:none' type='text'/>" +
