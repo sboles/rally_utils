@@ -14,7 +14,6 @@ var hideBadFieldsInDocument = function (d, container_id) {
         "date",
         "Due Date",
         "External Link",
-        "Data Migration",
         "Integrations Kanban",
         "Integrations TAM Votes",
         "IT Effort",
