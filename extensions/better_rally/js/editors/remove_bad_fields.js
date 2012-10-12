@@ -9,7 +9,6 @@ var hideBadFieldsInDocument = function (d, container_id) {
         "To Do",
         "Affects User Learning",
         "Anticipated Toggle On Date",
-        "Blocked Reason",
         "Customer Development Kanban",
         "date",
         "Due Date",
