@@ -1,5 +1,9 @@
 var hideBadFieldsInDocument = function (d, container_id) {
     var STORY_FIELDS_TO_HIDE = [
+        "ALM Kanban State",
+        "Code Review Link",
+        "Code Review",
+        "test",
         "Tags",
         "Blocked",
         "Iteration",
@@ -68,8 +72,10 @@ var hideBadFieldsInDocument = function (d, container_id) {
         headers.each(function (i, header) {
             var $header = $(header);
             var labelText = $header.text();
+            labelText = $.trim(labelText.substring(0, labelText.indexOf(":")));
+
             $(FIELDS_TO_HIDE).each(function (i, field) {
-                shouldHide |= labelText.indexOf(field) !== -1;
+                shouldHide |= labelText === field;
             });
 
             if (shouldHide) {
