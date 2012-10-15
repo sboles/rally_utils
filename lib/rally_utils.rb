@@ -37,7 +37,7 @@ module RallyUtils
   end
 
   def self.create_subscription_with(cookie, config)
-    subscription_id = create_subscription(cookie, config[:username], config[:modules])
+    subscription_id = create_subscription(cookie, config[:username], config[:modules], config[:subscription_type])
     switch_toggles(cookie, subscription_id, config[:toggles])
   end
 end
