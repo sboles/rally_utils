@@ -1,10 +1,17 @@
 (function () {
-    var setupSelectFromAllowedValues = function (allowedValues, initialValue, $policyHtml) {
+    var setupSelectFromAllowedValues = function (allowedValues, initialDisplayValue, $policyHtml) {
+
+        var initialValue = null;
         var $select = $("<select>");
         $.each(allowedValues, function (i, allowedValue) {
             var $option = $("<option>");
             $option.val(allowedValue.value);
             $option.text(allowedValue.displayValue);
+
+            if (allowedValue.displayValue === initialDisplayValue) {
+                initialValue = allowedValue.value;
+            }
+
             $select.append($option);
         });
 

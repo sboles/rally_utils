@@ -40,9 +40,19 @@
                 $card.find('a:contains(More...)').click();
                 RallyUtil.getReleases(function (releases) {
                     var releaseToSet = determineRelease(releases);
+                    console.log( releaseToSet );
                     RallyUtil.queryForArtifact(RallyUtil.getFormattedIdForCard($card), function (r) {
                         r.set("Release", releaseToSet.value);
-                        r.save();
+                        r.save({
+                            callback:function () {
+                                var $select = $card.find('p:contains(Release)').find('select');
+                                $select.hide();
+
+                                var $readOnlyText = $($select.parents('p')[0]).find('.readOnly');
+                                $readOnlyText.text(releaseToSet.displayValue);
+                                $readOnlyText.show();
+                            }
+                        });
                     });
                 });
             });
