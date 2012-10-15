@@ -21,8 +21,8 @@
             $modifiedInput.prop('disabled', true);
 
             var newBranchName = $modifiedInput.val();
-            var formattedId = getFormattedIdForCard($($modifiedInput.parents('.card')[0]));
-            queryForArtifact(formattedId, function (record) {
+            var formattedId = RallyUtil.getFormattedIdForCard($($modifiedInput.parents('.card')[0]));
+            RallyUtil.queryForArtifact(formattedId, function (record) {
                 var fieldToChange = null;
                 var name = $modifiedInput.attr('name');
                 if (name === "branch") {
@@ -52,39 +52,13 @@
         $card.find('.readOnlyInline').show();
     };
 
-    var getFormattedIdForCard = function ($card) {
-        return $card.find('.leftCardHeader').text();
-    };
-
-    var getModelNameFromFormattedId = function (formattedId) {
-        return formattedId.substring(0, 1) == "S" ? "HierarchicalRequirement" : "Defect";
-    };
-
-    var queryForArtifact = function (formattedId, callback) {
-        var modelName = getModelNameFromFormattedId(formattedId);
-        Rally.data.ModelFactory.getModel({
-            type:modelName,
-            success:function (model) {
-                model.find({
-                    filters:[
-                        {
-                            property:'FormattedID',
-                            value:formattedId
-                        }
-                    ],
-                    callback:callback
-                });
-            }
-        });
-    };
-
     var addImplementedInToCard = function () {
         var $card = $(this);
         if ($card.find('.branchIndicator').length === 0) {
             $card.find('.cardName').after("<hr/><div class='branchIndicator inlineHolder'></div>");
 
-            var cardFormattedId = getFormattedIdForCard($(this));
-            queryForArtifact(cardFormattedId, function (record) {
+            var cardFormattedId = RallyUtil.getFormattedIdForCard($(this));
+            RallyUtil.queryForArtifact(cardFormattedId, function (record) {
                 var modelName = record.store.model.elementName;
                 var branchName = modelName == "HierarchicalRequirement" ? record.get('ImplementedIn') : record.get("FixedInBuild");
                 var branchLabel = modelName == "HierarchicalRequirement" ? "Branch" : "Fixed In";
@@ -104,8 +78,8 @@
         if ($card.find('.peerReview').length === 0) {
             $card.find('.branchIndicator').after("<div class='peerReview inlineHolder'></div>");
 
-            var cardFormattedId = getFormattedIdForCard($(this));
-            queryForArtifact(cardFormattedId, function (record) {
+            var cardFormattedId = RallyUtil.getFormattedIdForCard($(this));
+            RallyUtil.queryForArtifact(cardFormattedId, function (record) {
                 var peerReviewLink = record.get("PeerReview");
                 var peerReviewHtml = "<strong>Peer Review:</strong> " +
                     "<span class='peerReviewSpan'>" +
@@ -128,8 +102,8 @@
 
             $card.find(precedingElement).after("<div class='blockedReason inlineHolder'></div>");
 
-            var cardFormattedId = getFormattedIdForCard($(this));
-            queryForArtifact(cardFormattedId, function (record) {
+            var cardFormattedId = RallyUtil.getFormattedIdForCard($(this));
+            RallyUtil.queryForArtifact(cardFormattedId, function (record) {
                 var blockedReason = record.get("BlockedReason");
                 var blockedReasonHtml = "<div class='blockedReasonHolder' style='display:none'>" +
                     "<strong>Blocked:</strong> " +
