@@ -16,7 +16,7 @@ Rally Developer Tools
   EOF
 
   dependencies = [
-      [:runtime, "uri-handler", ""],
+      [:runtime, "uri-handler", ">= 1.0.2"],
   ]
 
   s.files = Dir['**/*']
