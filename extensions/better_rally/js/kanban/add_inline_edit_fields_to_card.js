@@ -20,7 +20,7 @@
             var $modifiedInput = $(this);
             $modifiedInput.prop('disabled', true);
 
-            var newBranchName = $modifiedInput.val();
+            var newInlineText = $modifiedInput.val();
             var formattedId = RallyUtil.getFormattedIdForCard($($modifiedInput.parents('.card')[0]));
             RallyUtil.queryForArtifact(formattedId, function (record) {
                 var fieldToChange = null;
@@ -35,12 +35,16 @@
                     fieldToChange = "BlockedReason";
                 }
 
-                record.set(fieldToChange, newBranchName);
+                record.set(fieldToChange, newInlineText);
                 record.save({callback:function () {
                     $modifiedInput.hide();
-                    var $readOnlyBranchName = $($modifiedInput.parents('.inlineHolder')[0]).find('.readOnlyInline');
-                    $readOnlyBranchName.text(newBranchName);
-                    $readOnlyBranchName.show();
+                    var $readOnlyText = $($modifiedInput.parents('.inlineHolder')[0]).find('.readOnlyInline');
+                    $readOnlyText.text(newInlineText);
+                    $readOnlyText.show();
+
+                    if (name === "peerReview") {
+                        $($readOnlyText.parents('a')[0]).attr('href', newInlineText);
+                    }
                 }});
             });
         }
@@ -83,7 +87,7 @@
                 var peerReviewLink = record.get("PeerReview");
                 var peerReviewHtml = "<strong>Peer Review:</strong> " +
                     "<span class='peerReviewSpan'>" +
-                    "<span class='readOnlyInline'>" + peerReviewLink + "</span> " +
+                    "<a href='" + peerReviewLink + "'><span class='readOnlyInline'>" + peerReviewLink + "</span></a> " +
                     "<input name='peerReview' class='editPeerReview' style='display:none' type='text'/>" +
                     "</span>";
 
