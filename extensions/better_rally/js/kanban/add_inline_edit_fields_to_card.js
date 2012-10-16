@@ -100,8 +100,12 @@
         var $card = $(this);
         if ($card.find('.blockedReason').length === 0) {
             var precedingElement = '.peerReview';
-            if ($card.find('.peerReview').length === 0) {
+
+            if ($card.find(precedingElement).length === 0) {
                 precedingElement = '.branchIndicator';
+            }
+            if ($card.find(precedingElement).length === 0) {
+                precedingElement = '.cardName';
             }
 
             $card.find(precedingElement).after("<div class='blockedReason inlineHolder'></div>");
@@ -151,7 +155,7 @@
             $cards.each(addPeerReviewToCard);
         });
 
-        var BLOCKED_REASON_COLUMNS = ['Building', 'Peer Review', 'Testing', 'Merging'];
+        var BLOCKED_REASON_COLUMNS = ['Backlog', 'Ready', 'Building', 'Peer Review', 'Testing', 'Merging'];
         $(BLOCKED_REASON_COLUMNS).each(function (i, header) {
             var $cards = $('.columnHeader:contains("' + header + '")', d).parents('.column').find('.card');
             $cards.each(addBlockedReasonToCard);
