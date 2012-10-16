@@ -30,7 +30,14 @@
                                         }
                                     ],
                                     callback:function (storyRecord) {
-                                        storyRecord.set("Owner", ownerRecord.data);
+                                        var newOwner = ownerRecord.data;
+                                        var currentOwner = storyRecord.get('Owner');
+                                        if (currentOwner != null && currentOwner._refObjectName === ownerRecord.get('DisplayName')) {
+                                            newOwner = null;
+                                            newOwnerDisplayName = "None";
+                                        }
+
+                                        storyRecord.set("Owner", newOwner);
                                         storyRecord.save({
                                             callback:function (record, operation) {
                                                 if (operation.success) {
