@@ -183,13 +183,18 @@
     };
 
     setInterval(function (event) {
-        if ($('iframe').length == 0) {
+        var $iframes = $('iframe');
+        if ($iframes.length == 0) {
             return;
         }
 
-        $('iframe').each(function () {
-            addInlineEditFields($(this)[0].contentDocument);
-            addBlockedToggleListener($(this)[0].contentDocument);
+        $iframes.each(function () {
+            var src = this.getAttribute('src');
+            var iFrameIsInternal = src !== null && src.match('http') === null;
+            if (iFrameIsInternal) {
+                addInlineEditFields($(this)[0].contentDocument);
+                addBlockedToggleListener($(this)[0].contentDocument);
+            }
         });
     }, 2000);
 })();
