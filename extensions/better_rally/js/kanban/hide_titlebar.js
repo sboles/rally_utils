@@ -1,16 +1,20 @@
 (function () {
     var titleBarHidden = false;
+    var $style = $("<style type='text/css'>.portlet {padding-top: 0 !important;}</style>");
     var hideTitlebar = function () {
-        $('.titlebar:contains(Kanban)').hide();
-        $('head').append("<style type='text/css'>.portlet {padding-top: 0 !important;}</style>");
         titleBarHidden = true;
+        $('.titlebar:contains(Kanban)').hide();
+        $('head').append($style);
     };
 
-    document.addEventListener("DOMNodeInserted", function (event) {
+    var lookForTitleBar = function (event) {
         if ($('.titlebar').length == 0 || titleBarHidden) {
             return;
         }
 
         hideTitlebar();
-    });
+    };
+
+    document.addEventListener("DOMNodeInserted", lookForTitleBar);
+
 })();
