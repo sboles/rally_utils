@@ -1,19 +1,23 @@
 (function () {
-    var titleBarHidden = false;
     var $style = $("<style type='text/css'>.portlet {padding-top: 0 !important;}</style>");
-    var hideTitlebar = function () {
-        titleBarHidden = true;
-        $('.titlebar:contains(Kanban)').hide();
-        $('head').append($style);
+    var hideTitlebar = function (d) {
+        var $kanbanTitleBar = $('.titlebar:contains(Kanban)', d);
+        if ($kanbanTitleBar.length === 0) {
+            return false;
+        }
+
+        $kanbanTitleBar.remove();
+        $('head', d).append($style);
+
+        return true;
     };
 
-    var lookForTitleBar = function (event) {
+    var titleBarHidden = false;
+    setInterval(function () {
         if ($('.titlebar').length == 0 || titleBarHidden) {
             return;
         }
 
-        hideTitlebar();
-    };
-
-    document.addEventListener("DOMNodeInserted", lookForTitleBar);
+        titleBarHidden = hideTitlebar(document);
+    }, 2000);
 })();
