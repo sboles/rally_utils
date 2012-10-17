@@ -24,9 +24,11 @@ chrome.extension.sendMessage({is_toggled_on:true}, function (response) {
 
         injectJs([
             chrome.extension.getURL("js/lib/jquery-1.8.2.min.js"),
+            chrome.extension.getURL("js/lib/underscore-min.js"),
             chrome.extension.getURL("js/lib/date.js"),
             chrome.extension.getURL("js/util/query.js"),
             chrome.extension.getURL("js/util/releases.js"),
+            chrome.extension.getURL("js/util/polling.js"),
             chrome.extension.getURL("js/editors/remove_bad_fields.js"),
             chrome.extension.getURL("js/editors/remove_unused_story_menu_items.js"),
             chrome.extension.getURL("js/editors/filter_kanban_states.js"),
