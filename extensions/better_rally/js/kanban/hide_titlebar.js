@@ -16,5 +16,4 @@
     };
 
     document.addEventListener("DOMNodeInserted", lookForTitleBar);
-
 })();

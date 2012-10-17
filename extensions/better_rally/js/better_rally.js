@@ -35,6 +35,7 @@ chrome.extension.sendMessage({is_toggled_on:true}, function (response) {
             chrome.extension.getURL("js/kanban/auto_release_selection.js"),
             chrome.extension.getURL("js/kanban/add_inline_edit_fields_to_card.js"),
             chrome.extension.getURL("js/kanban/setup_kanban_rally_link.js"),
+            chrome.extension.getURL("js/kanban/remove_unnecessary_filters.js"),
             chrome.extension.getURL("js/kanban/hide_titlebar.js"),
             chrome.extension.getURL("js/kanban/add_policy_fields_to_cards.js"),
             chrome.extension.getURL("js/kanban/shorten_display_names.js"),
