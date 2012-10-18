@@ -1,5 +1,6 @@
 (function () {
-    var waitForElementsAndExecute = function (selectors, command) {
+    var waitForElementsAndExecute = function (selectors, command, interval) {
+        interval = interval || 2000;
         var pollingId = setInterval(function () {
             var shouldExecute = true;
             _.each(selectors, function (selector) {
@@ -14,7 +15,7 @@
                     clearInterval(pollingId);
                 }
             }
-        }, 2000);
+        }, interval);
     };
 
     var waitForIframeElementsAndExecute = function (selectors, command) {
