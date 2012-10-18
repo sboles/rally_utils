@@ -184,13 +184,5 @@
         });
     };
 
-    setInterval(function (event) {
-        if ($('iframe').length == 0) {
-            return;
-        }
-
-        $('iframe').each(function () {
-            addPolicyFieldsToCards($(this)[0].contentDocument);
-        });
-    }, 2000);
+    RallyUtil.waitForIframeElementsAndExecute([], addPolicyFieldsToCards);
 })();

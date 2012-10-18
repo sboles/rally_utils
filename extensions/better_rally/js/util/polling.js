@@ -28,7 +28,9 @@
     var waitForIframeElementsAndExecute = function (selectors, command) {
         waitForElementsAndExecute(['iframe.rally-html'], function () {
                 var iframe_document = $('iframe.rally-html')[0].contentDocument;
-                waitForElementsAndExecute(selectors, command(iframe_document));
+                waitForElementsAndExecute(selectors, function () {
+                    return command(iframe_document);
+                });
                 return true;
             }
         );
