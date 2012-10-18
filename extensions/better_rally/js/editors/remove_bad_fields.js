@@ -88,16 +88,13 @@ var hideBadFieldsInDocument = function (d, container_id) {
     $(elementsToHide).hide();
 };
 
-document.addEventListener("DOMNodeInserted", function (event) {
-    if ($('#detailContent').length == 0) {
-        return;
-    }
-
-    hideBadFieldsInDocument(document, 'detailContent');
+RallyUtil.pollForever(function () {
+    hideBadFieldsInDocument(document, 'detailContent')
 });
 
-setInterval(function () {
-    if (editorWindow) {
-        hideBadFieldsInDocument(editorWindow.document, 'formContent');
+RallyUtil.pollForever(function () {
+    if (_.isUndefined(editorWindow)) {
+        return;
     }
-}, 2000);
+    hideBadFieldsInDocument(editorWindow.document, 'formContent')
+});

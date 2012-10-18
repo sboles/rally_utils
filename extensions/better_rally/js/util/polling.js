@@ -1,6 +1,8 @@
 (function () {
+    var DEFAULT_POLL_INTERVAL = 2000;
+
     var waitForElementsAndExecute = function (selectors, command, interval) {
-        interval = interval || 2000;
+        interval = interval || DEFAULT_POLL_INTERVAL;
         var pollingId = setInterval(function () {
             var shouldExecute = true;
             _.each(selectors, function (selector) {
@@ -18,6 +20,11 @@
         }, interval);
     };
 
+    var pollForever = function (command, interval) {
+        interval = interval || DEFAULT_POLL_INTERVAL;
+        setInterval(command, interval);
+    };
+
     var waitForIframeElementsAndExecute = function (selectors, command) {
         waitForElementsAndExecute(['iframe.rally-html'], function () {
                 var iframe_document = $('iframe.rally-html')[0].contentDocument;
@@ -28,6 +35,7 @@
     };
 
     window.RallyUtil = window.RallyUtil || {};
+    RallyUtil.pollForever = pollForever;
     RallyUtil.waitForElementsAndExecute = waitForElementsAndExecute;
     RallyUtil.waitForIframeElementsAndExecute = waitForIframeElementsAndExecute;
 })();
