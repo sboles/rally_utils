@@ -40,7 +40,7 @@
                 $card.find('a:contains(More...)').click();
                 RallyUtil.getReleases(function (releases) {
                     var releaseToSet = determineRelease(releases);
-                    console.log( releaseToSet );
+                    console.log(releaseToSet);
                     RallyUtil.queryForArtifact(RallyUtil.getFormattedIdForCard($card), function (r) {
                         r.set("Release", releaseToSet.value);
                         r.save({
@@ -57,15 +57,9 @@
                 });
             });
         });
+
+        return false;
     };
 
-    setInterval(function (event) {
-        if ($('iframe').length == 0) {
-            return;
-        }
-
-        $('iframe').each(function () {
-            addAutoReleaseListener($(this)[0].contentDocument);
-        });
-    }, 2000);
+    RallyUtil.waitForIframeElementsAndExecute([], addAutoReleaseListener);
 })();

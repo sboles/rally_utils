@@ -1,9 +1,5 @@
 (function () {
     var shortenDisplayNames = function (d) {
-        if ($('.cardOwnerName', d).length === 0) {
-            return;
-        }
-
         $('.cardOwnerName', d).each(function () {
             var spaceIndex = $(this).text().indexOf(" ");
             if (spaceIndex !== -1) {
@@ -11,15 +7,9 @@
                 $(this).text(shortText);
             }
         });
+
+        return false;
     };
 
-    setInterval(function (event) {
-        if ($('iframe').length == 0) {
-            return;
-        }
-
-        $('iframe').each(function () {
-            shortenDisplayNames($(this)[0].contentDocument);
-        });
-    }, 2000);
+    RallyUtil.waitForIframeElementsAndExecute(['.cardOwnerName'], shortenDisplayNames);
 })();
