@@ -64,10 +64,6 @@
     };
 
     var addClaimButtonToKanbanCards = function (d) {
-        if ($('.card .editLinkContainer', d).length === 0) {
-            return;
-        }
-
         var $cardsMissingClaimButton = findCardsMissingClaimButton(d);
         var claimLinkStyle = "width:16px;height:16px;" +
             "background-repeat: no-repeat;" +
@@ -81,15 +77,9 @@
         $cardOwnerNameDiv.css("float", "right");
         $cardOwnerNameDiv.after(claimHtml);
         $cardsMissingClaimButton.find('.claimButton').click(claimButtonClicked);
+
+        return false;
     };
 
-    setInterval(function (event) {
-        if ($('iframe').length == 0) {
-            return;
-        }
-
-        $('iframe').each(function () {
-            addClaimButtonToKanbanCards($(this)[0].contentDocument);
-        });
-    }, 2000);
+    RallyUtil.waitForIframeElementsAndExecute(['.card .editLinkContainer'], addClaimButtonToKanbanCards);
 })();
