@@ -77,8 +77,6 @@
         $cardOwnerNameDiv.css("float", "right");
         $cardOwnerNameDiv.after(claimHtml);
         $cardsMissingClaimButton.find('.claimButton').click(claimButtonClicked);
-
-        return false;
     };
 
     RallyUtil.waitForIframeElementsAndExecute(['.card .editLinkContainer'], addClaimButtonToKanbanCards);

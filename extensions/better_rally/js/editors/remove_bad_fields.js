@@ -1,4 +1,5 @@
-var hideBadFieldsInDocument = function (d, container_id) {
+(function () {
+
     var STORY_FIELDS_TO_HIDE = [
         "ALM Kanban State",
         "Code Review Link",
@@ -65,36 +66,43 @@ var hideBadFieldsInDocument = function (d, container_id) {
 
     var FIELDS_TO_HIDE = $.merge(STORY_FIELDS_TO_HIDE, DEFECT_FIELDS_TO_HIDE);
 
-    var elementsToHide = [];
-    $(d).find('#' + container_id + ' tr').each(function (index, row) {
-        var shouldHide = false;
-        var headers = $(row).find('th');
-        headers.each(function (i, header) {
-            var $header = $(header);
-            var labelText = $header.text();
-            labelText = $.trim(labelText.substring(0, labelText.indexOf(":")));
+    var hideBadFieldsInDocument = function (w, container_id) {
 
-            $(FIELDS_TO_HIDE).each(function (i, field) {
-                shouldHide |= labelText === field;
+        if (_.isUndefined(w)) {
+            return;
+        }
+
+        var d = w.document;
+
+        var elementsToHide = [];
+        $(d).find('#' + container_id + ' tr').each(function (index, row) {
+            var shouldHide = false;
+            var headers = $(row).find('th');
+            headers.each(function (i, header) {
+                var $header = $(header);
+                var labelText = $header.text();
+                labelText = $.trim(labelText.substring(0, labelText.indexOf(":")));
+
+                $(FIELDS_TO_HIDE).each(function (i, field) {
+                    shouldHide |= labelText === field;
+                });
+
+                if (shouldHide) {
+                    elementsToHide.push(header);
+                    elementsToHide.push($header.next()[0]);
+                }
             });
-
-            if (shouldHide) {
-                elementsToHide.push(header);
-                elementsToHide.push($header.next()[0]);
-            }
         });
+
+        $(elementsToHide).hide();
+    };
+
+    RallyUtil.pollForever(function () {
+        hideBadFieldsInDocument(window, 'detailContent')
     });
 
-    $(elementsToHide).hide();
-};
+    RallyUtil.pollForever(function () {
+        hideBadFieldsInDocument(editorWindow, 'formContent')
+    });
 
-RallyUtil.pollForever(function () {
-    hideBadFieldsInDocument(document, 'detailContent')
-});
-
-RallyUtil.pollForever(function () {
-    if (_.isUndefined(editorWindow)) {
-        return;
-    }
-    hideBadFieldsInDocument(editorWindow.document, 'formContent')
-});
+})();

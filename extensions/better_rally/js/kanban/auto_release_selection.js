@@ -57,8 +57,6 @@
                 });
             });
         });
-
-        return false;
     };
 
     RallyUtil.waitForIframeElementsAndExecute([], addAutoReleaseListener);

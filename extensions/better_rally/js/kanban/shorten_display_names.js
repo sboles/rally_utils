@@ -7,8 +7,6 @@
                 $(this).text(shortText);
             }
         });
-
-        return false;
     };
 
     RallyUtil.waitForIframeElementsAndExecute(['.cardOwnerName'], shortenDisplayNames);

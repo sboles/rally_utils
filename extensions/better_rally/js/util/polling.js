@@ -20,16 +20,23 @@
         }, DEFAULT_POLL_INTERVAL);
     };
 
-    var pollForever = function (command, interval) {
-        interval = interval || DEFAULT_POLL_INTERVAL;
-        setInterval(command, interval);
+    var pollForever = function (command) {
+        setInterval(command, DEFAULT_POLL_INTERVAL);
     };
 
     var waitForIframeElementsAndExecute = function (selectors, command) {
         waitForElementsAndExecute(['iframe.rally-html'], function () {
                 var iframe_document = $('iframe.rally-html')[0].contentDocument;
-                waitForElementsAndExecute(selectors, command, iframe_document);
-                return true;
+                var shouldExecute = true;
+                _.each(selectors, function (selector) {
+                    if ($(selector, iframe_document).length === 0) {
+                        shouldExecute = false;
+                    }
+                });
+                if (shouldExecute) {
+                    command(iframe_document);
+                }
+                return false;
             }
         );
     };

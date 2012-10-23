@@ -4,9 +4,7 @@
         var $kanbanTitleBar = $('.titlebar:contains(Kanban)');
         $kanbanTitleBar.remove();
         $('head').append($style);
-
-        return true;
     };
 
-    RallyUtil.waitForElementsAndExecute(['.titlebar:contains(Kanban)'], hideTitlebar);
+    RallyUtil.pollForever(hideTitlebar);
 })();
