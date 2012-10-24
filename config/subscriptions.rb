@@ -12,6 +12,12 @@ module RallyUtils
           :toggles => []
       },
       {
+          :username => 'admin@ce.com',
+          :modules => [],
+          :subscription_type => 'HS_1',
+          :toggles => ['F2577_ADD_STORY_DEFECT_ASSOCIATION_TO_COMMUNITY_EDITION']
+      },
+      {
           :username => 'admin@ee.com',
           :modules => ['Rally Portfolio Manager', 'Rally Quality Manager'],
           :subscription_type => 'Enterprise',
