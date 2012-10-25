@@ -1,6 +1,6 @@
 (function () {
     var trimNavigationMenu = function () {
-        var DESIRED_TABS = ["Dashboard", "TESTenv", "Backlog", "User Stories", "Portfolio Items", "Kanban (S)", "Defects"];
+        var DESIRED_TABS = ["Dashboard", "TESTenv", "Backlog", "User Stories", "Portfolio Items", "Kanban (S)", "Defects", "Team Metrics for Steering", "Time In Process (TIP) Chart Prototype", "Cumulative Flow Diagram Prototype"];
         $('.nav-menu-item').filter(function () {
             var $menuItem = $(this);
             var shouldHide = true;
@@ -12,8 +12,6 @@
 
             return shouldHide;
         }).remove();
-
-        $('.nav-tab:contains("Reports")').remove();
     };
 
 

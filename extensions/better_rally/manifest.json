@@ -36,6 +36,7 @@
         "js/kanban/remove_unnecessary_filters.js",
         "js/kanban/add_policy_fields_to_cards.js",
         "js/kanban/shorten_display_names.js",
+        "js/kanban/add_overclaimed_indicator.js",
         "js/navigation/trim_navigation_menu.js"
     ],
     "browser_action":{

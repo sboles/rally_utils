@@ -6,6 +6,18 @@ module RallyUtils
   SUBSCRIPTIONS[:admin_password] = 'w0rk$h0p'
   SUBSCRIPTIONS[:subscriptions] = [
       {
+          :username => 'admin@hs.com',
+          :modules => [],
+          :subscription_type => 'HS_1',
+          :toggles => []
+      },
+      {
+          :username => 'admin@ce.com',
+          :modules => [],
+          :subscription_type => 'HS_1',
+          :toggles => ['F2577_ADD_STORY_DEFECT_ASSOCIATION_TO_COMMUNITY_EDITION']
+      },
+      {
           :username => 'admin@ee.com',
           :modules => ['Rally Portfolio Manager', 'Rally Quality Manager'],
           :subscription_type => 'Enterprise',
@@ -15,12 +27,6 @@ module RallyUtils
           :username => 'admin@xe.com',
           :modules => [],
           :subscription_type => 'Express_Edition',
-          :toggles => []
-      },
-      {
-          :username => 'admin@hs.com',
-          :modules => [],
-          :subscription_type => 'HS_1',
           :toggles => []
       }
   ]

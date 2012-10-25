@@ -34,6 +34,9 @@
                 else if (name === "blockedReason") {
                     fieldToChange = "BlockedReason";
                 }
+                else if (name === "verifiedIn") {
+                    verifiedIn = "VerifiedInBuild";
+                }
 
                 record.set(fieldToChange, newInlineText);
                 record.save({callback:function () {
@@ -130,6 +133,26 @@
         }
     };
 
+    var addVerifiedInToCard = function () {
+        var $card = $(this);
+        if ($card.find('.verifiedIn').length === 0) {
+            $card.find('.branchIndicator').after("<div class='verifiedIn inlineHolder'></div>");
+            var cardFormattedId = RallyUtil.getFormattedIdForCard($(this));
+            RallyUtil.queryForArtifact(cardFormattedId, function (record) {
+                var modelName = record.store.model.elementName;
+                if (modelName == "Defect") {
+                    var verifiedIn = record.get("VerifiedInBuild");
+                    var verifiedInHtml = "<strong>Verified In:</strong> " +
+                        "<span class='verifiedIn'>" +
+                        "<span class='readOnlyInline'>" + verifiedIn + "</span> " +
+                        "<input name='verifiedIn' class='editVerifiedIn' style='display:none' type='text'/>" +
+                        "</span>";
+
+                    buildCardWithEvents($card, verifiedInHtml, 'verifiedIn', 'editVerifiedIn');
+                }
+            });
+        }
+    };
 
     var buildCardWithEvents = function ($card, html, inlineHolderClass, inputClass) {
         $card.find('.' + inlineHolderClass).html(html);
@@ -159,6 +182,12 @@
         $(BLOCKED_REASON_COLUMNS).each(function (i, header) {
             var $cards = $('.columnHeader:contains("' + header + '")', d).parents('.column').find('.card');
             $cards.each(addBlockedReasonToCard);
+        });
+
+        var VERIFIED_IN_COLUMNS = ['Testing'];
+        $(VERIFIED_IN_COLUMNS).each(function (i, header) {
+            var $cards = $('.columnHeader:contains("' + header + '")', d).parents('.column').find('.card');
+            $cards.each(addVerifiedInToCard);
         });
     };
 
