@@ -24,7 +24,7 @@
 
     var setCardDisplayedOwner = function ($card, owner) {
         owner = (owner === "" || owner === null) ? "None" : owner;
-        $card.find('.cardOwnerName').text(owner);
+        $card.find('.cardRealOwnerName').text(owner);
         if (owner === "None") {
             $card.find('.claimButton').attr('style', unClaimLinkStyle);
         } else {
@@ -121,7 +121,7 @@
         var claimHtml = " <a title='Claim' style='" + claimLinkStyle + "' class='claimButton' href='#'></a>";
         var unClaimHtml = " <a title='Claim' style='" + unClaimLinkStyle + "' class='claimButton' href='#'></a>";
 
-        var $nameDiv = $card.find('.cardOwnerName');
+        var $nameDiv = $card.find('.cardRealOwnerName');
         if (!$nameDiv.data('claimButtonAdded')) {
             $nameDiv.data('claimButtonAdded', true);
             $nameDiv.css("display", "inline-block");
@@ -138,12 +138,17 @@
 
     var replaceOwner = function (d) {
         $('.cardOwnerName', d).each(function () {
-            var $card = $($(this).parents('.card')[0]);
-            var formattedId = RallyUtil.getFormattedIdForCard($($(this).parents('.card')[0]));
-            RallyUtil.queryForArtifact(formattedId, function (record) {
-                setCardDisplayedOwner($card, record.get('RealOwner'));
-                addClaimButtonToKanbanCard($card);
-            });
+            if ($(this).is(':visible')) {
+                $(this).hide();
+                var $realOwnerDiv = $("<div class='cardRealOwnerName'></div>");
+                $(this).after($realOwnerDiv);
+                var $card = $($(this).parents('.card')[0]);
+                var formattedId = RallyUtil.getFormattedIdForCard($($(this).parents('.card')[0]));
+                RallyUtil.queryForArtifact(formattedId, function (record) {
+                    setCardDisplayedOwner($card, record.get('RealOwner'));
+                    addClaimButtonToKanbanCard($card);
+                });
+            }
         });
     };
 
