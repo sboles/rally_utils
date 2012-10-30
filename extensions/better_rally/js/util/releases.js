@@ -18,8 +18,13 @@
             {displayValue:'No Entry', value:''}
         ];
         Ext4.Array.forEach(releases, function (release) {
-            if (new Date(Date.parse(release.displayValue)) >= (today - 1)) {
-                trimmedReleases.push(release);
+            try {
+                var parsedReleaseDate = Date.parse(release.displayValue);
+                if (new Date(parsedReleaseDate) >= (today - 1)) {
+                    trimmedReleases.push(release);
+                }
+            }
+            catch (ignored) {
             }
         });
         return trimmedReleases;
@@ -47,6 +52,7 @@
             success:function (model) {
                 releasesStore = Ext4.create("Ext.data.Store", {
                     fetch:["Name"],
+                    pageSize:100,
                     model:model
                 });
                 releasesStore.load({callback:function () {
