@@ -40,7 +40,6 @@ chrome.extension.sendMessage({is_toggled_on:true}, function (response) {
             chrome.extension.getURL("js/kanban/remove_unnecessary_filters.js"),
             chrome.extension.getURL("js/kanban/hide_titlebar.js"),
             chrome.extension.getURL("js/kanban/add_policy_fields_to_cards.js"),
-            chrome.extension.getURL("js/kanban/shorten_display_names.js"),
             chrome.extension.getURL("js/kanban/add_overclaimed_indicator.js"),
             chrome.extension.getURL("js/navigation/trim_navigation_menu.js")
         ]);
