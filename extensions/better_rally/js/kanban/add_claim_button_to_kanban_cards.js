@@ -107,12 +107,19 @@
         });
     };
 
+    var isCardInColumn = function ($card, column) {
+        var columnHeaderText = $card.parents('.column').find('.columnHeader').text();
+        return columnHeaderText.indexOf(column) !== -1;
+    };
+
     var claimButtonClicked = function () {
         var $card = $(this).parents('.card');
         var newOwnerDisplayName = $('#options').find('a').first().text();
 
         setRealOwner(newOwnerDisplayName, $card);
-        setNewOwner(newOwnerDisplayName, $card);
+        if (isCardInColumn($card, 'Building')) {
+            setNewOwner(newOwnerDisplayName, $card);
+        }
 
         return false;
     };
