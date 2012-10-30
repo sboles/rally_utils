@@ -147,7 +147,9 @@
         $('.cardOwnerName', d).each(function () {
             if ($(this).is(':visible')) {
                 $(this).hide();
-                var $realOwnerDiv = $("<div class='cardRealOwnerName'></div>");
+                $(this).parents('.card').find('img.cardOwner').remove();
+
+                var $realOwnerDiv = $("<div style='padding-right:0.5em' class='cardRealOwnerName'></div>");
                 $(this).after($realOwnerDiv);
                 var $card = $($(this).parents('.card')[0]);
                 var formattedId = RallyUtil.getFormattedIdForCard($($(this).parents('.card')[0]));
