@@ -1,8 +1,8 @@
 (function () {
     var addOverclaimedIndicator = function (d) {
         var allNames = {};
-        var $allCardOwners = $('.cardOwnerName', d);
-        var $allCards = $('.cardOwnerName', d).parents('.card');
+        var $allCardOwners = $('.cardRealOwnerName', d);
+        var $allCards = $('.cardRealOwnerName', d).parents('.card');
         $allCardOwners.each(function () {
             var currentName = $(this).text();
             if (!currentName.match(/No/)) {
@@ -13,7 +13,7 @@
         for (name in allNames) {
             var $cardsBeingWorked = $allCards.filter(function () {
                 var $thisCard = $(this);
-                var isOwnCard = $thisCard.find('.cardOwnerName').text() === name;
+                var isOwnCard = $thisCard.find('.cardRealOwnerName').text() === name;
                 var cardIsNotBlocked = $thisCard.find('.blockedIndicator').css('background-image').match(/not-blocked/);
                 var cardIsNotReady = $thisCard.find('.readyIndicator').css('background-image').match(/unready/);
                 var cardIsBeingWorked = isOwnCard && cardIsNotBlocked && cardIsNotReady;
@@ -31,5 +31,5 @@
         }
     };
 
-    RallyUtil.waitForIframeElementsAndExecute(['.cardOwnerName'], addOverclaimedIndicator);
+    RallyUtil.waitForIframeElementsAndExecute(['.cardRealOwnerName'], addOverclaimedIndicator);
 })();
