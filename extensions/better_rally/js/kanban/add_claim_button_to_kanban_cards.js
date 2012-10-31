@@ -22,10 +22,11 @@
         "background-image:url(data:image/png;base64," + UNCLAIM_IMAGE + ");" +
         "float:right; padding-right: 0.5em";
 
-    var setCardDisplayedOwner = function ($card, owner) {
+    var setCardDisplayedOwner = function ($card, realOwner, owner) {
+        realOwner = (realOwner === "" || realOwner === null) ? "None" : realOwner;
         owner = (owner === "" || owner === null) ? "None" : owner;
-        $card.find('.cardRealOwnerName').text(owner);
-        if (owner === "None") {
+        $card.find('.cardRealOwnerName').text("(" + realOwner + ") " + shortenName(owner));
+        if (realOwner === "None") {
             $card.find('.claimButton').attr('style', unClaimLinkStyle);
         } else {
             $card.find('.claimButton').attr('style', claimLinkStyle);
@@ -46,16 +47,18 @@
                         }
                     ],
                     callback:function (record) {
-                        var currentOwner = record.get('RealOwner');
+                        var currentRealOwner = record.get('RealOwner');
+                        var currentOwner = record.get('Owner') === null ? "None" : record.get('Owner')._refObjectName;
+
 
                         var newRealOwner = shortenName(newOwnerDisplayName);
-                        if (currentOwner === newRealOwner) {
+                        if (currentRealOwner === newRealOwner) {
                             newRealOwner = null;
                         }
 
                         record.set('RealOwner', newRealOwner);
                         record.save();
-                        setCardDisplayedOwner($card, newRealOwner);
+                        setCardDisplayedOwner($card, newRealOwner, currentOwner);
                     }
                 });
             }
@@ -88,15 +91,12 @@
                                         }
                                     ],
                                     callback:function (storyRecord) {
-                                        var newOwner = ownerRecord.data;
                                         var currentOwner = storyRecord.get('Owner');
-                                        if (currentOwner != null && currentOwner._refObjectName === ownerRecord.get('DisplayName')) {
-                                            newOwner = null;
-                                            newOwnerDisplayName = "None";
+                                        if (currentOwner == null || currentOwner._refObjectName !== ownerRecord.get('DisplayName')) {
+                                            storyRecord.set("Owner", ownerRecord.data);
+                                            storyRecord.save();
                                         }
-
-                                        storyRecord.set("Owner", newOwner);
-                                        storyRecord.save();
+                                        setRealOwner(newOwnerDisplayName, $card);
                                     }
                                 });
                             }
@@ -116,9 +116,10 @@
         var $card = $(this).parents('.card');
         var newOwnerDisplayName = $('#options').find('a').first().text();
 
-        setRealOwner(newOwnerDisplayName, $card);
         if (isCardInColumn($card, 'Building')) {
             setNewOwner(newOwnerDisplayName, $card);
+        } else {
+            setRealOwner(newOwnerDisplayName, $card);
         }
 
         return false;
@@ -154,7 +155,8 @@
                 var $card = $($(this).parents('.card')[0]);
                 var formattedId = RallyUtil.getFormattedIdForCard($($(this).parents('.card')[0]));
                 RallyUtil.queryForArtifact(formattedId, function (record) {
-                    setCardDisplayedOwner($card, record.get('RealOwner'));
+                    var owner = record.get('Owner') === null ? "None" : record.get('Owner')._refObjectName;
+                    setCardDisplayedOwner($card, record.get('RealOwner'), owner);
                     addClaimButtonToKanbanCard($card);
                 });
             }
