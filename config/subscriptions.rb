@@ -15,7 +15,7 @@ module RallyUtils
           :username => 'admin@ce.com',
           :modules => [],
           :subscription_type => 'HS_1',
-          :toggles => ['F2577_ADD_STORY_DEFECT_ASSOCIATION_TO_COMMUNITY_EDITION']
+          :toggles => ['F2577_ADD_STORY_DEFECT_ASSOCIATION_TO_COMMUNITY_EDITION', 'F2578_TWO_LEVEL_HIERARCHY']
       },
       {
           :username => 'admin@ee.com',

@@ -20,6 +20,8 @@ module RallyUtils
   def self.create_subscription(cookie, admin_user, modules, type)
     form_string = {'adminUser' => admin_user, 'password' => 'Password', 'password2' => 'Password', 'tagTypes' => modules, 'type' => type, 'unpaidSeats' => '-1'}
     response = post('http://localhost:7001/slm/admin/sp/edit/createAndClose.sp?cpoid=1&projectScopeUp=false&projectScopeDown=true', cookie, form_string)
+    subscription_id = response.body.match('Subscription (\d+)')[1]
+    return subscription_id
   end
 
   def self.switch_toggles(cookie, subscription_id, toggles)
