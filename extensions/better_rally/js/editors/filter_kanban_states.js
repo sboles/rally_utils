@@ -11,7 +11,7 @@
         var optionsToHide = $kanbanStateSelect.find('option').filter(function (i) {
             return $.inArray($(this).val(), VALID_VALUES) === -1;
         });
-        optionsToHide.remove();
+        optionsToHide.slice(1).remove();
     };
 
     RallyUtil.pollForever(function () {
