@@ -36,10 +36,6 @@
             {
                 displayName:'Impact On Ops',
                 modelName:'ImpactonOps'
-            },
-            {
-                displayName:'Data Migration',
-                modelName:'DataMigration'
             }
         ],
         "Peer Review":[
