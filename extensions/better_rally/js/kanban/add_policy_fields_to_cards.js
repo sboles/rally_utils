@@ -72,6 +72,10 @@
             {
                 displayName:'Release',
                 modelName:'Release'
+            },
+            {
+                displayName:'Impact On Ops',
+                modelName:'ImpactonOps'
             }
         ]
     };
