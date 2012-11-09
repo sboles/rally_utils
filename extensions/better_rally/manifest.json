@@ -27,6 +27,7 @@
         "js/editors/remove_bad_fields.js",
         "js/editors/filter_kanban_states.js",
         "js/editors/remove_unused_story_menu_items.js",
+        "js/editors/filter_owners.js",
         "js/kanban/expand_all_kanban_cards.js",
         "js/kanban/add_claim_button_to_kanban_cards.js",
         "js/kanban/auto_release_selection.js",
