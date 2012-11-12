@@ -30,6 +30,7 @@ chrome.extension.sendMessage({is_toggled_on:true}, function (response) {
             chrome.extension.getURL("js/util/releases.js"),
             chrome.extension.getURL("js/util/polling.js"),
             chrome.extension.getURL("js/editors/remove_bad_fields.js"),
+            chrome.extension.getURL("js/editors/filter_owners.js"),
             chrome.extension.getURL("js/editors/remove_unused_story_menu_items.js"),
             chrome.extension.getURL("js/editors/filter_kanban_states.js"),
             chrome.extension.getURL("js/kanban/expand_all_kanban_cards.js"),
