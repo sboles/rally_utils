@@ -22,9 +22,10 @@
         "background-image:url(data:image/png;base64," + UNCLAIM_IMAGE + ");" +
         "float:right; padding-right: 0.5em";
 
-    var setCardDisplayedOwner = function ($card, realOwner) {
+    var setCardDisplayedOwner = function ($card, realOwner, owner) {
         realOwner = (realOwner === "" || realOwner === null) ? "None" : realOwner;
-        $card.find('.cardRealOwnerName').text(realOwner);
+        owner = (owner === "" || owner === null) ? "None" : owner;
+        $card.find('.cardRealOwnerName').text("(" + realOwner + ") " + shortenName(owner));
         if (realOwner === "None") {
             $card.find('.claimButton').attr('style', unClaimLinkStyle);
         } else {
