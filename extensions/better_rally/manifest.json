@@ -6,6 +6,7 @@
     "background":{
         "scripts":["js/background.js"]
     },
+    "options_page": "html/options.html",
     "permissions":[
         "tabs"
     ],
@@ -23,6 +24,7 @@
         "js/lib/date.js",
         "js/util/releases.js",
         "js/util/polling.js",
+        "js/util/build_data.js",
         "js/util/query.js",
         "js/editors/remove_bad_fields.js",
         "js/editors/filter_kanban_states.js",
