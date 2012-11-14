@@ -35,7 +35,7 @@
                     fieldToChange = "BlockedReason";
                 }
                 else if (name === "verifiedIn") {
-                    verifiedIn = "VerifiedInBuild";
+                    fieldToChange = "VerifiedInBuild";
                 }
 
                 record.set(fieldToChange, newInlineText);
@@ -154,6 +154,36 @@
         }
     };
 
+    var pushedCheckboxChecked = function () {
+        var $input = $(this);
+        $input.attr("disabled", true);
+        var isPushed = $(this).is(":checked");
+        var cardFormattedId = RallyUtil.getFormattedIdForCard($($(this).parents('.card')[0]));
+        RallyUtil.queryForArtifact(cardFormattedId, function (record) {
+            record.set("PushedToMaster", isPushed);
+            record.save({callback:function () {
+                $input.removeAttr("disabled");
+            }});
+        });
+    };
+
+    var addPushedToCard = function () {
+        var $card = $(this);
+        if ($card.find('.pushed').length === 0) {
+            $card.find('.branchIndicator').after("<div class='pushed inlineHolder'></div>");
+            var cardFormattedId = RallyUtil.getFormattedIdForCard($(this));
+            RallyUtil.queryForArtifact(cardFormattedId, function (record) {
+                var isPushed = record.get("PushedToMaster");
+
+                $card.find('.pushed.inlineHolder').html("<strong>Pushed:</strong> " +
+                    "<input name='pushedToMaster' class='editPushed' type='checkbox' " +
+                    (isPushed ? "checked='checked'" : "") + "/>");
+
+                $card.find('.editPushed').click(pushedCheckboxChecked);
+            });
+        }
+    };
+
     var buildCardWithEvents = function ($card, html, inlineHolderClass, inputClass) {
         $card.find('.' + inlineHolderClass).html(html);
 
@@ -188,6 +218,12 @@
         $(VERIFIED_IN_COLUMNS).each(function (i, header) {
             var $cards = $('.columnHeader:contains("' + header + '")', d).parents('.column').find('.card');
             $cards.each(addVerifiedInToCard);
+        });
+
+        var PUSHED_TO_MASTER_COLUMNS = ['Merging'];
+        $(PUSHED_TO_MASTER_COLUMNS).each(function (i, header) {
+            var $cards = $('.columnHeader:contains("' + header + '")', d).parents('.column').find('.card');
+            $cards.each(addPushedToCard);
         });
     };
 
