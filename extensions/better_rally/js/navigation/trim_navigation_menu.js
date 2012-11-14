@@ -1,6 +1,6 @@
 (function () {
     var trimNavigationMenu = function () {
-        var DESIRED_TABS = ["Dashboard", "TESTenv", "Backlog", "User Stories", "Portfolio Items", "Kanban (S)", "Defects", "Team Metrics for Steering", "Time In Process (TIP) Chart Prototype", "Cumulative Flow Diagram Prototype"];
+        var DESIRED_TABS = ["Dashboard", "TESTenv", "Backlog", "User Stories", "Portfolio Items", "Kanban (S)", "Portfolio/Story Hierarchy", "Defects", "Team Metrics for Steering", "Time In Process (TIP) Chart Prototype", "Cumulative Flow Diagram Prototype"];
         $('.nav-menu-item').filter(function () {
             var $menuItem = $(this);
             var shouldHide = true;
@@ -15,7 +15,7 @@
     };
 
 
-    document.addEventListener("DOMNodeInserted", function (event) {
+    document.addEventListener("DOMNodeInserted", function () {
         if ($('.nav-menu-item').length == 0) {
             return;
         }

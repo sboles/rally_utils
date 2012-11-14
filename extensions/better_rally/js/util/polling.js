@@ -20,8 +20,9 @@
         }, DEFAULT_POLL_INTERVAL);
     };
 
-    var pollForever = function (command) {
-        setInterval(command, DEFAULT_POLL_INTERVAL);
+    var pollForever = function (command, interval) {
+        command();
+        setInterval(command, interval || DEFAULT_POLL_INTERVAL);
     };
 
     var waitForIframeElementsAndExecute = function (selectors, command) {
