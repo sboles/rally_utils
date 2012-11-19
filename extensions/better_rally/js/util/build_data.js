@@ -1,7 +1,17 @@
 (function () {
     var _buildData = {};
     var _buildDefinitions = {};
-    var _interestingBuilds = JSON.parse(localStorage['rally_utils.interesting_builds']);
+
+    var _interestingBuildsJSON = localStorage['rally_utils.interesting_builds'];
+    var _interestingBuilds = ['master-alm-continuous',
+        'master-alm-continuous-guitest',
+        'master-alm-continuous-java',
+        'master-alm-continuous-js',
+        'master-flaky-finder-continuous'
+    ];
+    if (_interestingBuildsJSON) {
+        _interestingBuilds = JSON.parse(_interestingBuildsJSON);
+    }
 
     var _fetchBuildDefinitions = function () {
         _.each(_interestingBuilds, function (buildName) {
