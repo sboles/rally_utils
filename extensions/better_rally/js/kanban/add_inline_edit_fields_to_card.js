@@ -90,7 +90,7 @@
                 var peerReviewLink = record.get("PeerReview");
                 var peerReviewHtml = "<strong>Peer Review:</strong> " +
                     "<span class='peerReviewSpan'>" +
-                    "<a href='" + peerReviewLink + "'><span class='readOnlyInline'>" + peerReviewLink + "</span></a> " +
+                    "<a target='_peerReview'' href='" + peerReviewLink + "'><span class='readOnlyInline'>" + peerReviewLink + "</span></a> " +
                     "<input name='peerReview' class='editPeerReview' style='display:none' type='text'/>" +
                     "</span>";
 
