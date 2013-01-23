@@ -21,7 +21,7 @@ module RallyUtils
           :username => 'admin@ee.com',
           :modules => ['Rally Portfolio Manager', 'Rally Quality Manager'],
           :subscription_type => 'Enterprise',
-          :toggles => ['ENABLE_BULK_EDIT_OF_ALL_FIELDS', 'PROVISION_TRIAL_AND_COMMUNITY_IN_PROD']
+          :toggles => ['ENABLE_BULK_EDIT_OF_ALL_FIELDS', 'PROVISION_TRIAL_AND_COMMUNITY_IN_PROD','IMPORT_TASKS']
       },
       {
           :username => 'admin@xe.com',
