@@ -1,3 +1,6 @@
+#!/usr/bin/env bash --login
+rm *.gem
 gem build rally_utils.gemspec
-RALLY_UTILS_HOME=`pwd` && cd $WEBAPP_HOME && gem install $RALLY_UTILS_HOME/*.gem 
-gem install $RALLY_UTILS_HOME/*.gem
+gem uninstall -x rally_utils && gem install *.gem
+rvm use --create --install ruby-1.8.7-p352@alm-webapp
+gem uninstall -x rally_utils && gem install *.gem

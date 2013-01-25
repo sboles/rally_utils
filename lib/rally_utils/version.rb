@@ -1,3 +1,3 @@
 module RallyUtils
-  VERSION = '2'
+  VERSION = '3'
 end
