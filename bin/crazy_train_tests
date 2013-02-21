@@ -5,6 +5,7 @@ def run_jenkins_job(url, json_param)
   log(url, json_param)
   system "curl -d 'json=#{json_param.to_uri}' #{url}/build\?delay\=0sec"
 end
+
 def log(url, json_param)
   puts "submitting to url=#{url} with params=#{json_param}"
 end
@@ -20,7 +21,7 @@ if /master/ =~ branch_name
 end
 
 firefox_version ='15.0.1'
-run_jenkins_job 'http://alm-build:8080/hudson/view/\~crazytrain/job/crazytrain-alm-js', "{\"parameter\":[{\"name\":\"SENCHA_PATH\",\"value\":\"/opt/SenchaSDKTools-2.0.0-beta3\"},{\"name\": \"FIREFOX_VERSION\", \"value\": \"#{firefox_version}\"},{\"name\":\"GIT_BRANCH\",\"value\":\"#{branch_name}\"}]}"
+run_jenkins_job('http://alm-build:8080/hudson/view/\~crazytrain/job/crazytrain-alm-js-firefox',"{\"parameter\":[{\"name\": \"FIREFOX_VERSION\", \"value\": \"18.0.1\"},{\"name\":\"JASMINE_PORT\",\"value\":\"1500\"},{\"name\":\"JASMINE_USE_WEBDRIVERJS\",\"value\":\"true\"},{\"name\":\"SELENIUM_SERVER_ARGS\",\"value\":\"-browser \\\"browserName=chrome,version=18\\\" -browser \\\"browserName=firefox,version=15.0.1,firefox_binary=/opt/firefox-15.0.1/firefox\\\" -browser \\\"browserName=firefox,version=18.0.1,firefox_binary=/opt/firefox-18.0.1/firefox\\\"\"},{\"name\":\"SELENIUM_SERVER\",\"value\":\"http://localhost:5445/wd/hub\"},{\"name\":\"GIT_BRANCH\",\"value\":\"#{branch_name}\"}]}")
 run_jenkins_job 'http://alm-build:8080/hudson/view/\~crazytrain/job/crazytrain-alm-java', "{\"parameter\":[{\"name\":\"GIT_BRANCH\",\"value\":\"#{branch_name}\"}]}"
 run_jenkins_job 'http://alm-build:8080/hudson/view/%7Ecrazytrain/job/crazytrain-alm-guitest', "{\"parameter\": [{\"name\": \"NUMBER_OF_THREADS\", \"value\": \"22\"}, {\"name\": \"SELENIUM_HOST\", \"value\": \"localhost\"}, {\"name\": \"SELENIUM_PORT\", \"value\": \"5445\"}, {\"name\": \"VERIFY_SOLR_INDEX_EMPTY\", \"value\": \"true\"}, {\"name\": \"BROWSER\", \"value\": \"firefox\"}, {\"name\": \"CHROME_VERSION\", \"value\": \"18\"}, {\"name\": \"FIREFOX_VERSION\", \"value\": \"#{firefox_version}\"}, {\"name\": \"CAPTURE_SCREENSHOTS\", \"value\": \"true\"}, {\"name\": \"CAPTURE_VIDEOS\", \"value\": \"false\"}, {\"name\": \"USE_LAST_SUCCESSFUL_BUILD\", \"value\": \"false\"}, {\"name\": \"LAST_SUCCESSFUL_BRANCH\", \"value\": \"master\"}, {\"name\": \"GIT_BRANCH\", \"value\": \"#{branch_name}\"}]}"
 
