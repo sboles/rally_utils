@@ -7,11 +7,12 @@ def run_jenkins_job(url, json_param)
 end
 
 def log(url, json_param)
-  puts "submitting to url=#{url} with params=#{json_param}"
+  verbose = ARGV.include?('-v')
+  puts "submitting to url=#{url} with params=#{json_param}" if verbose
 end
 
 branch_name = nil
-branch_name=ARGV[0] if ARGV.length == 1
+branch_name=ARGV[-1] if (ARGV.length > 0 && !ARGV[-1].eql?('-v'))
 branch_name = `git branch | grep "*" | sed "s/* //"`.strip if !branch_name
 puts "branch is #{branch_name}"
 
