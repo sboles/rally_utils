@@ -5,7 +5,6 @@
         "Code Review Link",
         "Code Review",
         "test",
-        "Tags",
         "Blocked",
         "Iteration",
         "Plan Est",
