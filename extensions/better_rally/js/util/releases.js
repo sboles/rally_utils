@@ -5,7 +5,7 @@
         ];
         store.each(function (record) {
             var name = record.get("Name");
-            releases.push({displayValue:name, value:record.get("_ref")});
+            releases.push({displayValue:name, value:record.get("_ref"), project: record.get("Project")._refObjectName});
         });
 
         return trimReleasesToFuture(releases);
@@ -20,7 +20,7 @@
         Ext4.Array.forEach(releases, function (release) {
             try {
                 var parsedReleaseDate = Date.parse(release.displayValue);
-                if (new Date(parsedReleaseDate) >= (today - 1)) {
+                if (release.project == "Crazy Train" && new Date(parsedReleaseDate) >= (today - 1)) {
                     trimmedReleases.push(release);
                 }
             }
@@ -29,7 +29,7 @@
         });
         Ext4.Array.forEach(releases, function (release) {
             var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
-            if (release.displayValue.search('Crazy Train') >= 0 && release.displayValue.search(monthNames[today.getMonth()]) >= 0) {
+            if (release.project == "Crazy Train" && release.displayValue.search('Crazy Train') >= 0 && release.displayValue.search(monthNames[today.getMonth()]) >= 0) {
                 trimmedReleases.push(release);
             }
         });
