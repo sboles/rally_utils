@@ -39,7 +39,7 @@
                 }
 
                 record.set(fieldToChange, newInlineText);
-                record.save({callback:function () {
+                record.save({callback: function () {
                     $modifiedInput.hide();
                     var $readOnlyText = $($modifiedInput.parents('.inlineHolder')[0]).find('.readOnlyInline');
                     $readOnlyText.text(newInlineText);
@@ -62,7 +62,7 @@
     var addImplementedInToCard = function () {
         var $card = $(this);
         if ($card.find('.branchIndicator').length === 0) {
-            $card.find('.cardName').after("<hr/><div class='branchIndicator inlineHolder'></div>");
+            $card.find('.parent').after("<div class='branchIndicator inlineHolder'></div>");
 
             var cardFormattedId = RallyUtil.getFormattedIdForCard($(this));
             RallyUtil.queryForArtifact(cardFormattedId, function (record) {
@@ -95,6 +95,26 @@
                     "</span>";
 
                 buildCardWithEvents($card, peerReviewHtml, 'peerReview', 'editPeerReview');
+            });
+        }
+    };
+
+    var addParentFieldToCard = function () {
+        var $card = $(this);
+        if ($card.find('.parent').length === 0) {
+            var $branchIndicator = $card.find('.branchIndicator');
+            $card.find('hr').after("<div class='parent'></div>");
+
+            var cardFormattedId = RallyUtil.getFormattedIdForCard($(this));
+            RallyUtil.queryForArtifact(cardFormattedId, function (record) {
+                var parent = record.get("Parent");
+                var html = "";
+                if (parent) {
+                    html = "<div><strong>Parent: </strong>" + parent.FormattedID + "</div>";
+                } else {
+                    html = "<div style='color:red;'><strong>Parent: </strong></div>";
+                }
+                $card.find(".parent").html(html);
             });
         }
     };
@@ -161,7 +181,7 @@
         var cardFormattedId = RallyUtil.getFormattedIdForCard($($(this).parents('.card')[0]));
         RallyUtil.queryForArtifact(cardFormattedId, function (record) {
             record.set("PushedToMaster", isPushed);
-            record.save({callback:function () {
+            record.save({callback: function () {
                 $input.removeAttr("disabled");
             }});
         });
@@ -184,6 +204,12 @@
         }
     };
 
+    var addHrToCard = function () {
+        if ($(this).find('hr').length === 0) {
+            $(this).find('.cardName').after('<hr/>');
+        }
+    };
+
     var buildCardWithEvents = function ($card, html, inlineHolderClass, inputClass) {
         $card.find('.' + inlineHolderClass).html(html);
 
@@ -196,6 +222,16 @@
     };
 
     var addInlineEditFields = function (d) {
+        var ALL_COLUMNS = ['Backlog', 'Ready', 'Building', 'Peer Review', 'Testing', 'Merging'];
+
+        $(ALL_COLUMNS).each(function (i, header) {
+            $('.columnHeader:contains("' + header + '")', d).parents('.column').find('.card').each(addHrToCard);
+        });
+
+        $(ALL_COLUMNS).each(function (i, header) {
+            $('.columnHeader:contains("' + header + '")', d).parents('.column').find('.card').each(addParentFieldToCard);
+        });
+
         var IMPLEMENTED_IN_COLUMNS = ['Building', 'Peer Review', 'Testing', 'Merging'];
         $(IMPLEMENTED_IN_COLUMNS).each(function (i, header) {
             var $cards = $('.columnHeader:contains("' + header + '")', d).parents('.column').find('.card');
@@ -208,10 +244,8 @@
             $cards.each(addPeerReviewToCard);
         });
 
-        var BLOCKED_REASON_COLUMNS = ['Backlog', 'Ready', 'Building', 'Peer Review', 'Testing', 'Merging'];
-        $(BLOCKED_REASON_COLUMNS).each(function (i, header) {
-            var $cards = $('.columnHeader:contains("' + header + '")', d).parents('.column').find('.card');
-            $cards.each(addBlockedReasonToCard);
+        $(ALL_COLUMNS).each(function (i, header) {
+            $('.columnHeader:contains("' + header + '")', d).parents('.column').find('.card').each(addBlockedReasonToCard);
         });
 
         var VERIFIED_IN_COLUMNS = ['Testing'];
