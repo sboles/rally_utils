@@ -20,7 +20,7 @@
         Ext4.Array.forEach(releases, function (release) {
             try {
                 var parsedReleaseDate = Date.parse(release.displayValue);
-                if (release.project == "Crazy Train" && new Date(parsedReleaseDate) >= (today - 1)) {
+                if (release.project == "Crazy Train" && new Date(parsedReleaseDate) >= (today - 60*60*24*1000)) {
                     trimmedReleases.push(release);
                 }
             }
