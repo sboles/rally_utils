@@ -27,6 +27,12 @@
             catch (ignored) {
             }
         });
+        Ext4.Array.forEach(releases, function (release) {
+            var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+            if (release.displayValue.search('Crazy Train') >= 0 && release.displayValue.search(monthNames[today.getMonth()]) >= 0) {
+                trimmedReleases.push(release);
+            }
+        });
         return trimmedReleases;
     };
 
