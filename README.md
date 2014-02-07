@@ -5,7 +5,7 @@ In your Gemfile:
 
 * `gem 'rally_utils', :git => 'git://github.com/sboles/rally_utils.git'`
 
-## Create Subscriptions
+## create_subscriptions
 * Create a `subscriptions` file like the following:
 
 ```ruby
