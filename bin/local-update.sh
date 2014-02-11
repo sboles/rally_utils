@@ -38,7 +38,7 @@ echo_and_run grunt build
 
 
 # update alm
-APPSDK_PATH=~/projects/appsdk
+echo_and_run export APPSDK_PATH=~/projects/appsdk
 echo_and_run cd ~/projects/alm/alm-webapp
 git_update
 echo_and_run rvm rvmrc load
