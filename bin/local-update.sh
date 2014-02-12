@@ -8,8 +8,8 @@ echo_and_run() {
 }
 
 git_update() {
-    echo_and_run git add -A .
-    echo_and_run git stash
+    TODAY=`date`
+    echo_and_run git stash save --include-untracked "local-update auto stash at ${TODAY}"
     echo_and_run git checkout master
     echo_and_run git pull
 }
@@ -38,7 +38,7 @@ echo_and_run grunt build
 
 
 # update alm
-echo_and_run export APPSDK_PATH=~/projects/appsdk
+echo_and_run export APPSDK_PATH=${HOME}/projects/appsdk
 echo_and_run cd ~/projects/alm/alm-webapp
 git_update
 echo_and_run rvm rvmrc load
