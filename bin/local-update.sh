@@ -44,5 +44,5 @@ git_update
 echo_and_run rvm rvmrc load
 echo_and_run npm install
 echo_and_run grunt build
-echo_and_run buildr alm:data:clean
+echo_and_run buildr db:migrations
 echo_and_run buildr clean jetty:run
