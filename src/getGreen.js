@@ -99,7 +99,7 @@ function checkDoneAndPrint (obj) {
 
 
 /** ----------- main ----------- */
-(function () {
+function main () {
 
   var output = {
     alm: {
@@ -138,4 +138,6 @@ function checkDoneAndPrint (obj) {
     });
   });
 
-})();
+}
+
+module.exports = main;
