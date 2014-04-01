@@ -57,7 +57,10 @@ function isBuildSuccessful (buildObj) {
 
 function requestCommit (path, callback) {
   requestJson({jenkinsPath: path}, function (json) {
-    callback(json.changeSet.items[0].commitId);
+    var item = _.find(json.actions, function (item) {
+      return item.hasOwnProperty('lastBuiltRevision');
+    });
+    callback(item.lastBuiltRevision.SHA1);
   });
 }
 
@@ -70,8 +73,15 @@ function findMostRecentBump (builds, callback) {
   var build = _.first(builds);
   var jenkinsPath = u.parse(build.url).path;
   requestJson({jenkinsPath: jenkinsPath}, function (json) {
-    var msg = json.changeSet.items[0].msg;
-    var matches = msg.match(/bumping app catalog to (\d+).*sdk\-(\d+)/);
+    var changeSets = json.changeSet.items;
+    var matches;
+    var msg;
+    
+    if (changeSets.length > 0) {
+      msg = json.changeSet.items[0].msg;
+      matches = msg.match(/bumping app catalog to (\d+).*sdk\-(\d+)/);
+    }
+
     if (!matches) {
       findMostRecentBump(_.rest(builds), callback)
     } else {
