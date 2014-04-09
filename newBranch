@@ -2,10 +2,16 @@
 var spawn = require('child_process').spawn;
 var gotoGreen = require('./src/getGreen');
 
-var branchName = process.argv[2];
+if (process.argv.length !== 3) {
+	console.log('ERROR! One argument is required');
+	console.log('usage: newBranch <newBranchName>');
+	process.exit(1);
+}
+
+var newBranchName = process.argv[2];
 
 gotoGreen(function (commits) {
-	localUpdate = spawn(__dirname + '/bin/local-update.sh', [branchName, commits.appsdk.commit, commits.appCatalog.commit, commits.alm.commit]);
+	localUpdate = spawn(__dirname + '/bin/local-update.sh', [newBranchName, commits.appsdk.commit, commits.appCatalog.commit, commits.alm.commit]);
 
 	localUpdate.stdout.on('data', function (data) {
 		process.stdout.write(data);
