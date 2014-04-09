@@ -93,7 +93,7 @@ function findMostRecentBump (builds, callback) {
   });
 }
 
-function checkDoneAndPrint (obj) {
+function checkDoneAndPrint (obj, callback) {
   var isDone = _.all(obj, function (o) {
     return !!o.commit;
   });
@@ -105,11 +105,13 @@ function checkDoneAndPrint (obj) {
   _.each(obj, function (o) {
     console.log([o.message, o.commit, '(' + jenkinsBase + o.path + ')'].join(' '));
   });
+
+  callback(obj);
 }
 
 
-/** ----------- main ----------- */
-function main () {
+/** ----------- gotoGreen ----------- */
+function gotoGreen (callback) {
 
   var output = {
     alm: {
@@ -138,16 +140,16 @@ function main () {
 
       requestCommit(paths.appCatalogPath, function (commit) {
         output.appCatalog.commit = commit;
-        checkDoneAndPrint(output);
+        checkDoneAndPrint(output, callback);
       });
 
       requestCommit(paths.appsdkBridgePath, function (commit) {
         output.appsdk.commit = commit;
-        checkDoneAndPrint(output);
+        checkDoneAndPrint(output, callback);
       });
     });
   });
 
 }
 
-module.exports = main;
+module.exports = gotoGreen;

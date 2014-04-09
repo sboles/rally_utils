@@ -1,0 +1,24 @@
+#! /usr/local/bin/node
+
+// usage: newBranch <branchName>
+
+var spawn = require('child_process').spawn;
+var gotoGreen = require('./src/getGreen');
+
+var branchName = process.argv[2];
+
+gotoGreen(function (commits) {
+	localUpdate = spawn(__dirname + '/bin/local-update.sh', [branchName, commits.appsdk.commit, commits.appCatalog.commit, commits.alm.commit]);
+
+	localUpdate.stdout.on('data', function (data) {
+		process.stdout.write(data);
+	});
+
+	localUpdate.stderr.on('data', function (data) {
+		process.stdout.write('stderr: ' + data);
+	});
+
+	localUpdate.on('close', function (code) {
+		process.stdout.write('child process exited with code ' + code);
+	});
+});

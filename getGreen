@@ -1,5 +1,4 @@
 #! /usr/local/bin/node
-
 var gotoGreen = require('./src/getGreen');
 
-gotoGreen();
+gotoGreen(function () {});
