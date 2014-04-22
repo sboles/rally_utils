@@ -1,4 +1,5 @@
 #! /usr/local/bin/node
+
 var spawn = require('child_process').spawn;
 var gotoGreen = require('./src/getGreen');
 
@@ -11,17 +12,17 @@ if (process.argv.length !== 3) {
 var newBranchName = process.argv[2];
 
 gotoGreen(function (commits) {
-	localUpdate = spawn(__dirname + '/bin/local-update.sh', [newBranchName, commits.appsdk.commit, commits.appCatalog.commit, commits.alm.commit]);
+	var spawnedProcess = spawn(__dirname + '/bin/branch-repos.sh', [newBranchName, commits.appsdk.commit, commits.appCatalog.commit, commits.alm.commit]);
 
-	localUpdate.stdout.on('data', function (data) {
+	spawnedProcess.stdout.on('data', function (data) {
 		process.stdout.write(data);
 	});
 
-	localUpdate.stderr.on('data', function (data) {
+	spawnedProcess.stderr.on('data', function (data) {
 		process.stdout.write('stderr: ' + data);
 	});
 
-	localUpdate.on('close', function (code) {
+	spawnedProcess.on('close', function (code) {
 		process.stdout.write('child process exited with code ' + code);
 	});
 });
