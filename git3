@@ -1,0 +1,55 @@
+#! /usr/local/bin/node
+
+var spawn = require('child_process').spawn;
+var gotoGreen = require('./src/getGreen');
+
+function printInstructionsAndExit () {
+	console.log('git3 [<git-command>...] [-g | --greens]');
+	console.log('This script will execute git with the arguments you specify in the appsdk, app-catalog, and alm-webapp repos');
+	console.log('The argument "greens", will add the latest green commit SHA to the end of the git commands');
+	process.exit(1);
+}
+
+function validateAndRun (args) {
+
+	if (args.length < 1) {
+		console.log('ERROR! Incorrect usage!');
+		printInstructionsAndExit();
+		return;
+	}
+
+	if (['--greens', '-g'].indexOf(args[args.length - 1]) !== -1) {
+		args.pop();
+		runWithGreens(args);
+		return;
+	}
+
+	spawnAndRunScript(__dirname + '/bin/git3.sh', args);
+}
+
+function runWithGreens (scriptArgs) {
+	gotoGreen(function (commits) {
+		var args = ['--greens', commits.appsdk.commit, commits.appCatalog.commit, commits.alm.commit].concat(scriptArgs);
+		spawnAndRunScript(__dirname + '/bin/git3.sh', args);
+	});
+}
+
+function spawnAndRunScript (scriptPath, args) {
+	var spawnedProcess = spawn(scriptPath, args);
+
+	spawnedProcess.stdout.on('data', function (data) {
+		process.stdout.write(data);
+	});
+
+	spawnedProcess.stderr.on('data', function (data) {
+		process.stdout.write('stderr: ' + data);
+	});
+
+	spawnedProcess.on('close', function (code) {
+		if (code !== 0) {
+			process.stdout.write('child process exited with code ' + code + '\n');
+		}
+	});
+}
+
+validateAndRun(process.argv.slice(2));
