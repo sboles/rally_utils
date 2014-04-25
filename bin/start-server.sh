@@ -20,6 +20,10 @@ echo_and_run cd ~/.oh-my-zsh-custom
 echo_and_run rvm rvmrc load
 
 
+echo_and_run export APPSDK_PATH=${HOME}/projects/appsdk
+echo_and_run export APPCATALOG_PATH=${HOME}/projects/app-catalog
+
+
 # update appsdk
 echo_and_run cd ~/projects/appsdk
 echo_and_run rvm rvmrc load
@@ -35,11 +39,10 @@ echo_and_run grunt build
 
 
 # update alm
-echo_and_run export APPSDK_PATH=${HOME}/projects/appsdk
-echo_and_run export APPCATALOG_PATH=${HOME}/projects/app-catalog
 echo_and_run cd ~/projects/alm/alm-webapp
 echo_and_run rvm rvmrc load
 echo_and_run npm install
 echo_and_run grunt build
+echo_and_run buildr clean
 echo_and_run buildr db:migrations
-echo_and_run buildr clean jetty:run
+echo_and_run buildr jetty:run
