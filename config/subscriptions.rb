@@ -11,12 +11,6 @@ module RallyUtils
           :modules => ['Rally Portfolio Manager', 'Rally Quality Manager'],
           :subscription_type => 'Enterprise',
           :toggles => TOGGLES 
-      },
-      {
-          :username => 'admin@ue.com',
-          :modules => ['Rally Portfolio Manager', 'Rally Quality Manager'],
-          :subscription_type => 'Unlimited',
-          :toggles => TOGGLES 
       }
   ]
 end
