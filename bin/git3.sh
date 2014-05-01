@@ -9,12 +9,6 @@ echo_and_run() {
 
 git_command() {
     echo_and_run cd $1
-
-    if ! git diff-index --quiet HEAD --; then
-        echo_error "ERROR! There are pending changes in $1"
-        exit
-    fi
-
     echo_and_run git ${@:2}
 }
 
