@@ -49,9 +49,9 @@ function getLastSuccessfulBuildUrl (json) {
   return json.lastSuccessfulBuild.url;
 }
 
-function isBuildSuccessful (buildObj) {
-  return _.all(buildObj.subBuilds, function (subBuildObj) {
-    return subBuildObj.result === 'SUCCESS';
+function isBuildFailure (buildObj) {
+  return _.any(buildObj.subBuilds, function (subBuildObj) {
+    return subBuildObj.result !== 'SUCCESS';
   });
 }
 
@@ -65,8 +65,8 @@ function requestCommit (path, callback) {
 }
 
 function requestGreenAppCatalogAndSdkPaths (json, callback) {
-  var successfulBuilds = _.filter(json.builds, isBuildSuccessful);
-  findMostRecentBump(successfulBuilds, callback);
+  var buildsStartingWithLatestSuccess = _.rest(json.builds, isBuildFailure);
+  findMostRecentBump(buildsStartingWithLatestSuccess, callback);
 }
 
 function findMostRecentBump (builds, callback) {
