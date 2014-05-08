@@ -4,16 +4,32 @@ var spawn = require('child_process').spawn;
 var gotoGreen = require('./src/getGreen');
 
 function printInstructionsAndExit () {
-	console.log('git3 [<git-command>...] [-g | --greens]');
-	console.log('This script will execute git with the arguments you specify in the appsdk, app-catalog, and alm-webapp repos');
-	console.log('The argument "greens", will add the latest green commit SHA to the end of the git commands');
+	console.log([
+		'Usage',
+		'=====',
+		'git3 [<git-command>...] [-g | --greens]',
+		'This script will execute git with the arguments you specify in the appsdk, app-catalog, and alm-webapp repos.',
+		'The [-g | --greens] will add the latest green commit SHA to the end of the git commands.',
+		'',
+		'Example',
+		'=======',
+		'$: git3 checkout -b feature1 -g #executes the following...',
+		'',
+		'$: cd ~/projects/appsdk',
+		'$: git checkout -b feature1 <latest-appsdk-green-sha1>',
+		'$: cd ~/projects/app-catalog',
+		'$: git checkout -b feature1 <latest-app-catalog-green-sha1>',
+		'$: cd ~/projects/alm/alm-webapp',
+		'$: git checkout -b feature1 <latest-alm-green-sha1>',
+		''
+	].join('\n'));
 	process.exit(1);
 }
 
 function validateAndRun (args) {
 
 	if (args.length < 1) {
-		console.log('ERROR! Incorrect usage!');
+		console.log('\nERROR! Incorrect usage!\n');
 		printInstructionsAndExit();
 		return;
 	}
