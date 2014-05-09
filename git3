@@ -63,6 +63,8 @@ function validateAndRun (args) {
 }
 
 function runWithGreens (scriptArgs) {
+	log('retrieving latest greens...');
+
 	getGreens.getGreens(function (commits) {
 		getGreens.printOutput(commits);
 
