@@ -1,7 +1,7 @@
 #! /usr/local/bin/node
 
 var spawn = require('child_process').spawn;
-var gotoGreen = require('./src/getGreen');
+var getGreens = require('./src/getGreens');
 
 function printInstructionsAndExit () {
 	console.log([
@@ -44,7 +44,8 @@ function validateAndRun (args) {
 }
 
 function runWithGreens (scriptArgs) {
-	gotoGreen(function (commits) {
+	getGreens.getGreens(function (commits) {
+		getGreens.printOutput(commits);
 		var args = ['--greens', commits.appsdk.commit, commits.appCatalog.commit, commits.alm.commit].concat(scriptArgs);
 		spawnAndRunScript(__dirname + '/bin/git3.sh', args);
 	});
@@ -58,7 +59,7 @@ function spawnAndRunScript (scriptPath, args) {
 	});
 
 	spawnedProcess.stderr.on('data', function (data) {
-		process.stdout.write('stderr: ' + data);
+		process.stdout.write(data);
 	});
 
 	spawnedProcess.on('close', function (code) {

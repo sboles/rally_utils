@@ -4,20 +4,19 @@ echo_and_run() {
     tput setaf 4
     echo "[git-repos]: $@"
     tput sgr0
-    $@
+    "$@"
 }
 
 git_command() {
-    echo_and_run cd $1
-    echo_and_run git ${@:2}
+    echo_and_run cd "$1"
+    echo_and_run git "${@:2}"
 }
 
 echo_error() {
     tput setaf 1
-    echo $1
+    echo "$1"
     tput sgr0
 }
-
 
 
 if [[ $# < 1 ]]; then
@@ -28,18 +27,20 @@ fi
 
 COMMITS=""
 if [[ $1 = "--greens" ]]; then
-    COMMITS=(${@:2:4})
-    GIT_COMMANDS=${@:5}
+    COMMITS=("${@:2:4}")
+    GIT_COMMANDS=("${@:5}")
 else
-    GIT_COMMANDS=${@:1}
+    GIT_COMMANDS=("${@:1}")
 fi
+
+
 
 REPO_DIRS=(~/projects/appsdk ~/projects/app-catalog ~/projects/alm/alm-webapp)
 
 
 i=0
-for DIR in ${REPO_DIRS[@]}
+for DIR in "${REPO_DIRS[@]}"
 do
-    git_command $DIR $GIT_COMMANDS ${COMMITS[$i]}
+    git_command $DIR "${GIT_COMMANDS[@]}" ${COMMITS[$i]}
     let "i += 1"
 done

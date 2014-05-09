@@ -1,4 +1,6 @@
 #! /usr/local/bin/node
-var gotoGreen = require('./src/getGreen');
+var getGreens = require('./src/getGreens');
 
-gotoGreen(function () {});
+getGreens.getGreens(function (obj) {
+	getGreens.printOutput(obj);
+});
