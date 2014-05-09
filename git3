@@ -2,6 +2,25 @@
 
 var spawn = require('child_process').spawn;
 var getGreens = require('./src/getGreens');
+var _ = require('lodash');
+var clc = require('cli-color');
+
+var home = process.env.HOME;
+var globalDirConfig = {
+	alm: {
+		dir: home + '/projects/alm/alm-webapp',
+		args: []
+	},
+	appsdk: {
+		dir: home + '/projects/appsdk',
+		args: []
+	},
+	appCatalog: {
+		dir: home + '/projects/app-catalog',
+		args: []
+	}
+};
+
 
 function printInstructionsAndExit () {
 	console.log([
@@ -13,7 +32,7 @@ function printInstructionsAndExit () {
 		'',
 		'Example',
 		'=======',
-		'$: git3 checkout -b feature1 -g #executes the following...',
+		'$: git3 checkout -b feature1 -g #does the equivalent of the following...',
 		'',
 		'$: cd ~/projects/appsdk',
 		'$: git checkout -b feature1 <latest-appsdk-green-sha1>',
@@ -29,7 +48,7 @@ function printInstructionsAndExit () {
 function validateAndRun (args) {
 
 	if (args.length < 1) {
-		console.log('\nERROR! Incorrect usage!\n');
+		console.log(clc.red('\nERROR! Incorrect usage!\n'));
 		printInstructionsAndExit();
 		return;
 	}
@@ -40,33 +59,56 @@ function validateAndRun (args) {
 		return;
 	}
 
-	spawnAndRunScript(__dirname + '/bin/git3.sh', args);
+	runInDirectories(_.clone(globalDirConfig, true), 'git', args);
 }
 
 function runWithGreens (scriptArgs) {
 	getGreens.getGreens(function (commits) {
 		getGreens.printOutput(commits);
-		var args = ['--greens', commits.appsdk.commit, commits.appCatalog.commit, commits.alm.commit].concat(scriptArgs);
-		spawnAndRunScript(__dirname + '/bin/git3.sh', args);
+
+		var dirConfig = _.clone(globalDirConfig, true);
+		dirConfig.alm.args = [commits.alm.commit];
+		dirConfig.appsdk.args = [commits.appsdk.commit];
+		dirConfig.appCatalog.args = [commits.appCatalog.commit];
+
+		runInDirectories(dirConfig, 'git', scriptArgs);
 	});
 }
 
-function spawnAndRunScript (scriptPath, args) {
-	var spawnedProcess = spawn(scriptPath, args);
+function spawnAndRunScript (dir, command, commandArgs) {
+	var out = [];
+	var spawnedProcess = spawn(command, commandArgs, {
+		cwd: dir
+	});
 
 	spawnedProcess.stdout.on('data', function (data) {
-		process.stdout.write(data);
+		out.push(data);
 	});
 
 	spawnedProcess.stderr.on('data', function (data) {
-		process.stdout.write(data);
+		out.push(data);
 	});
 
 	spawnedProcess.on('close', function (code) {
+		log(clc.bold([command, commandArgs.join(' ')].join(' ')) + ' # in ' + dir);
+
+		console.log(out.join(''));
+
 		if (code !== 0) {
-			process.stdout.write('child process exited with code ' + code + '\n');
+			console.log(clc.red(['child process exited with code', code, '\n'].join(' ')));
 		}
 	});
+}
+
+function runInDirectories(dirConfig, command, commandArgs) {
+	log('running commands in directories');
+	_.each(dirConfig, function (obj) {
+		spawnAndRunScript(obj.dir, command, commandArgs.concat(obj.args));
+	});
+}
+
+function log(message) {
+	console.log(clc.blue('[git3] ' + message));
 }
 
 validateAndRun(process.argv.slice(2));
