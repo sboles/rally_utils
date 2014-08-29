@@ -11,6 +11,17 @@ module RallyUtils
     end
     res
   end
+  
+  def self.get(url, cookie)
+    uri = URI(url)
+    req = Net::HTTP::Get.new(uri.request_uri)
+    req['Cookie'] = cookie
+    http = Net::HTTP.new(uri.host, uri.port)
+    res = http.start do |http|
+      http.request(req)
+    end
+    res
+  end
 
   def self.login(username, password)
     auth_response = post('http://localhost:7001/slm/j_spring_security_check', nil, {'j_username' => username, 'j_password' => password})
@@ -18,7 +29,9 @@ module RallyUtils
   end
 
   def self.create_subscription(cookie, admin_user, modules, type)
-    form_string = {'adminUser' => admin_user, 'password' => 'Password', 'password2' => 'Password', 'tagTypes' => modules, 'type' => type, 'unpaidSeats' => '-1'}
+    create_form_response = get('http://localhost:7001/slm/admin/sp/new.sp?cpoid=1&projectScopeUp=false&projectScopeDown=true', cookie)
+    key = create_form_response.body.match('SecurityToken.*content=\"(.*)\"')[1]
+    form_string = {'key' => key, 'adminUser' => admin_user, 'password' => 'Password', 'password2' => 'Password', 'tagTypes' => modules, 'type' => type, 'unpaidSeats' => '-1'}
     response = post('http://localhost:7001/slm/admin/sp/edit/createAndClose.sp?cpoid=1&projectScopeUp=false&projectScopeDown=true', cookie, form_string)
     subscription_id = response.body.match('Subscription (\d+)')[1]
     return subscription_id
