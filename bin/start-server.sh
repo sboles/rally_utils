@@ -17,6 +17,7 @@ fi
 
 # update oh-my-zsh-custom
 echo_and_run cd ~/.oh-my-zsh-custom
+echo_and_run git pull
 echo_and_run rvm rvmrc load
 
 
