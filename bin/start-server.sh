@@ -22,7 +22,7 @@ echo_and_run rvm rvmrc load
 
 
 echo_and_run export APPSDK_PATH=${HOME}/projects/appsdk
-echo_and_run export APPCATALOG_PATH=${HOME}/projects/app-catalog
+echo_and_run export APP_CATALOG_PATH=${HOME}/projects/app-catalog
 
 
 # update appsdk
