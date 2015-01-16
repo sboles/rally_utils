@@ -23,7 +23,7 @@ module RallyUtils
 end
 ```
 * Start your server
-* Run `create_subscriptions`
+* Run `bin/create_subscriptions`
 
 ## git-branches
 A shell script to list branches with the authors of the last commit. A name can be supplied 
