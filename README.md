@@ -1,10 +1,5 @@
 # Development shims while working at Rally
 
-## Installation
-In your Gemfile:
-
-* `gem 'devutils', :git => 'git://github.com/RallySoftware/devutils.git'`
-
 ## create_subscriptions
 * Create a `subscriptions` file like the following:
 
