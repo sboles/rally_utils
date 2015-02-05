@@ -3,7 +3,7 @@
 ## Installation
 In your Gemfile:
 
-* `gem 'rally_utils', :git => 'git://github.com/sboles/rally_utils.git'`
+* `gem 'devutils', :git => 'git://github.com/RallySoftware/devutils.git'`
 
 ## create_subscriptions
 * Create a `subscriptions` file like the following:
@@ -24,11 +24,3 @@ end
 ```
 * Start your server
 * Run `bin/create_subscriptions`
-
-## git-branches
-A shell script to list branches with the authors of the last commit. A name can be supplied 
-to find all branches where the last commit's author string includes the name.
-
-* git-branches - list all branches with the last commit author
-* git-branches "string" - list all branches that include 'string' in the last commit author string   
-
