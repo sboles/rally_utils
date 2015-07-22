@@ -46,4 +46,4 @@ echo_and_run npm install
 echo_and_run grunt build
 echo_and_run ./gradlew clean
 echo_and_run ./gradlew dbMigrations
-echo_and_run ./gradlew jettyRun
+echo_and_run ./gradlew corra 
