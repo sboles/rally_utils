@@ -29,21 +29,21 @@ echo_and_run export APP_CATALOG_PATH=${HOME}/projects/app-catalog
 echo_and_run cd ~/projects/appsdk
 echo_and_run rvm rvmrc load
 echo_and_run npm install
-echo_and_run grunt build
+echo_and_run grunt clean build
 
 
 # update app-catalog
 echo_and_run cd ~/projects/app-catalog
 echo_and_run rvm rvmrc load
 echo_and_run npm install
-echo_and_run grunt build
+echo_and_run grunt clean build
 
 
 # update alm
 echo_and_run cd ~/projects/alm/alm-webapp
 echo_and_run rvm rvmrc load
 echo_and_run npm install
-echo_and_run grunt build
+echo_and_run grunt clean build
 echo_and_run ./gradlew clean
 echo_and_run ./gradlew dbMigrations
 echo_and_run ./gradlew corra 
